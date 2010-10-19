@@ -1,7 +1,7 @@
 " Last edit date: 12.10.2010 15:08:14
 set nocompatible
 
-colorscheme darkblue
+colorscheme darkblue_rmx
 
 syntax on
 filetype on
