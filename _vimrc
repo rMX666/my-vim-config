@@ -1,4 +1,4 @@
-" Last edit date: 12.10.2010 15:08:14
+" Last edit date: 19.10.2010 15:47:02
 set nocompatible
 
 colorscheme darkblue_rmx
@@ -47,7 +47,6 @@ function! ToggleMyTabWidth()
 		echo "< No tab mode (tabwidth=" . g:my_tabwidth . ") >"
 	endif
 endfunction
-" And thats all, are you scared? Me - not =)
 nmap <F11> :execute ToggleMyTabWidth()<CR>
 
 set list
@@ -56,14 +55,14 @@ set listchars=tab:\|-
 set smarttab
 set smartindent
 
-" разбивать окно горизонтально снизу
+" split window vertically
 set splitbelow
-" разбивать окно вертикально справа
+" split window horizontally
 set splitright
 
-" использовать wildmenu ...
+" use wildmenu ...
 set wildmenu
-" ... с авто-дополнением
+" ... with auto-complete
 set wildcharm=<TAB>
 
 " Search and highlight search-results
@@ -84,7 +83,7 @@ set showcmd			" display incomplete commands
 " folding
 set foldenable
 set foldmethod=syntax
-set foldcolumn=2
+set foldcolumn=3
 set foldlevel=9999 " don't fold by default
 
 " codepage sequence
@@ -96,8 +95,6 @@ endif
 set fencs=utf-8,cp1251,koi8-r,cp866
 
 if has('gui')
-"	highlight LineNr guibg=midnightblue
-"	highlight FoldColumn guibg=midnightblue
 	winpos 0 0
 	set guioptions-=T "disable toolbar
 	set guioptions+=b
@@ -181,22 +178,22 @@ nnoremap <silent> <Space> :silent noh<Bar>echo<CR>
 map Q gq
 
 " CTRL-X and SHIFT-Del are Cut
-vnoremap <C-X> "+x
-vnoremap <S-Del> "+x
+vnoremap <C-X>		"+x
+vnoremap <S-Del>	"+x
 
 " CTRL-C and CTRL-Insert are Copy
-vnoremap <C-C> "+y
-vnoremap <C-Insert> "+y
+vnoremap <C-C>		"+y
+vnoremap <C-Insert>	"+y
 
 " CTRL-V and SHIFT-Insert are Paste
-map <C-V>		"+gP
+map <C-V>			"+gP
 map <S-Insert>		"+gP
 
-cmap <C-V>		<C-R>+
+cmap <C-V>			<C-R>+
 cmap <S-Insert>		<C-R>+
 
 " Pasting blockwise and linewise selections is not possible in Insert and
-" Visual mode without the +virtualedit feature.	They are pasted as if they
+" Visual mode without the +virtualedit feature. They are pasted as if they
 " were characterwise instead.
 " Uses the paste.vim autoload script.
 
@@ -227,31 +224,31 @@ set colorcolumn=+1
 set textwidth=120
 
 " ----------------------------------------------------------------------------------------------------------------------
-" Задаем собственные функции для назначения имен заголовкам табов -->
+" Make own tab-headers -->
 function! MyTabLine()
 	let tabline = ''
 
-	" Формируем tabline для каждой вкладки -->
+	" Make tabline for every tab -->
 	for i in range(tabpagenr('$'))
-	" Подсвечиваем заголовок выбранной в данный момент вкладки.
+	" Highlihgt current tab header
 		if i + 1 == tabpagenr()
 			let tabline .= '%#TabLineSel#'
 		else
 			let tabline .= '%#TabLine#'
 		endif
 
-		" Устанавливаем номер вкладки
+		" Add tab number
 		let tabline .= '%' . (i + 1) . 'T'
 
-		" Получаем имя вкладки
+		" Add tab name
 		let tabline .= ' %{MyTabLabel(' . (i + 1) . ')} |'
 	endfor
-	" Формируем tabline для каждой вкладки <--
+	" Stop making tabline <--
 
-	" Заполняем лишнее пространство
+	" Append space to the end
 	let tabline .= '%#TabLineFill#%T'
 
-	" Выровненная по правому краю кнопка закрытия вкладки
+	" Right-aligned close button
 	if tabpagenr('$') > 1
 		let tabline .= '%=%#TabLine#%999XX'
 	endif
@@ -263,7 +260,7 @@ function! MyTabLabel(n)
 	let label = ''
 	let buflist = tabpagebuflist(a:n)
 
-	" Имя файла и номер вкладки -->
+	" File name, window count and tab number -->
 	let label = substitute(bufname(buflist[tabpagewinnr(a:n) - 1]), '.*/', '', '')
 
 	if label == ''
@@ -275,9 +272,9 @@ function! MyTabLabel(n)
 	if winnr > 1
 		let label .= ' [W:' . winnr . ']'
 	endif
-	" Имя файла и номер вкладки <--
+	" File name, window count and tab number <--
 
-	" Определяем, есть ли во вкладке хотя бы один модифицированный буфер. -->
+	" Search for modified buffers -->
 	for i in range(len(buflist))
 		if getbufvar(buflist[i], "&modified")
 			let label = '[+] ' . label
@@ -289,6 +286,7 @@ function! MyTabLabel(n)
 	return label
 endfunction
 
+" Make own tooltip
 function! MyGuiTabToolTip()
 	let tt = "Files:"
 
@@ -325,7 +323,7 @@ endfunction
 set tabline=%!MyTabLine()
 set guitablabel=%!MyGuiTabLabel()
 set guitabtooltip=%!MyGuiTabToolTip()
-" Задаем собственные функции для назначения имен заголовкам табов <-----------------------------------------------------
+" Make own tab-headers <------------------------------------------------------------------------------------------------
 
 function! ShowVimrcMappings()
 	let mcnt = 0
@@ -351,7 +349,6 @@ map <C-F3> :execute ShowVimrcMappings()<CR>
 :menutranslate clear
 :so $VIMRUNTIME\delmenu.vim
 :so $VIMRUNTIME\menu.vim
-:menutranslate clear
 
 an My\ Menu.Insert\ date<TAB>F2 a<C-R>=strftime("%c")<CR><Esc> 
 an My\ Menu.Toggle\ tabwidth<TAB>F11 :execute ToggleMyTabWidth()<CR>
@@ -373,9 +370,6 @@ an My\ Menu.Plugins.PHP\ Documentor.Add\ comment<TAB>C-P <ESC>:call PhpDocSingle
 " Plugin settings ------------------------------------------------------------------------------------------------------
 map <C-F5> <ESC>:BufExplorerVerticalSplit<CR>
 map <C-F6> <ESC>:NERDTree<CR><CR>
-"inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i 
-"nnoremap <C-P> :call PhpDocSingle()<CR>
-"vnoremap <C-P> :call PhpDocRange()<CR>
 
 let g:pdv_cfg_Author = 'Станин Михаил aka _rMX_'
 let g:pdv_cfg_Copyright = '(c)'
