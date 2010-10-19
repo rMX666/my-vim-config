@@ -77,4 +77,4 @@ hi CursorLine		guibg=MidnightBlue						ctermbg=blue
 hi CursorColumn		guibg=MidnightBlue						ctermbg=blue
 hi ColorColumn		guibg=darkgrey							ctermbg=darkgrey
 
-hi link Error		SpellBad
+hi Error			term=reverse		ctermbg=9	gui=undercurl		guifg=NONE		guibg=NONE			guisp=red
