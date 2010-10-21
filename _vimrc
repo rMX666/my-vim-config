@@ -1,4 +1,4 @@
-" Last edit date: 19.10.2010 15:47:02
+" Last edit date: 21.10.2010 11:33:47
 set nocompatible
 
 colorscheme darkblue_rmx
@@ -50,10 +50,12 @@ endfunction
 nmap <F11> :execute ToggleMyTabWidth()<CR>
 
 set list
-set listchars=tab:\|-
+set listchars=tab:\|-,trail:.
 
 set smarttab
 set smartindent
+
+set autoindent
 
 " split window vertically
 set splitbelow
@@ -83,7 +85,7 @@ set showcmd			" display incomplete commands
 " folding
 set foldenable
 set foldmethod=syntax
-set foldcolumn=3
+set foldcolumn=2
 set foldlevel=9999 " don't fold by default
 
 " codepage sequence
@@ -118,6 +120,7 @@ function! ToggleWrap()
 		set nolist
 		set wrap
 		set linebreak
+		set showbreak=>\ 
 		echo "< Wrap mode >"
 	endif
 endfunction
