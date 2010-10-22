@@ -1,6 +1,9 @@
 " Last edit date: 21.10.2010 11:33:47
 set nocompatible
 
+" Disable fucking bell
+set visualbell t_vb=
+
 colorscheme darkblue_rmx
 
 syntax on
@@ -351,8 +354,8 @@ map <C-F3> :execute ShowVimrcMappings()<CR>
 " Make a menu for my maps ----------------------------------------------------------------------------------------------
 if has('gui')
 	:menutranslate clear
-	:so $VIMRUNTIME/vimfiles/delmenu.vim
-	:so $VIMRUNTIME/vimfiles/menu.vim
+	:so $VIMRUNTIME/delmenu.vim
+	:so $VIMRUNTIME/menu.vim
 
 	an My\ Menu.Insert\ date<TAB>F2 a<C-R>=strftime("%c")<CR><Esc> 
 	an My\ Menu.Toggle\ tabwidth<TAB>F11 :execute ToggleMyTabWidth()<CR>
