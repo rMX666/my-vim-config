@@ -19,7 +19,7 @@ syn match   gitconfigVariable	 "\%(^\s*\)\@<=\a\k*\%(\s*\%([=#;]\|$\)\)\@=" next
 syn region  gitconfigAssignment  matchgroup=gitconfigNone start=+=\s*+ skip=+\\+ end=+\s*$+ contained contains=gitconfigBoolean,gitconfigNumber,gitConfigString,gitConfigEscape,gitConfigError,gitconfigComment keepend
 syn keyword gitconfigBoolean true false yes no contained
 syn match   gitconfigNumber  "\d\+" contained
-syn region  gitconfigString  matchgroup=gitconfigDelim start=+"+ skip=+\\+ end=+"+ matchgroup=gitconfigError end=+[^\\"]\%#\@!$+ contained contains=gitconfigEscape,gitconfigEscapeError
+syn region  gitconfigString  matchgroup=gitconfigDelim start=+"+ skip=+\\+ end=+"+ matchgroup=gitconfigError end=+[^\\"]\%#\@!$+ contained containedin=gitconfigSection contains=gitconfigEscape,gitconfigEscapeError
 syn match   gitconfigError  +\\.+	 contained
 syn match   gitconfigEscape +\\[\\"ntb]+ contained
 syn match   gitconfigEscape +\\$+	 contained
