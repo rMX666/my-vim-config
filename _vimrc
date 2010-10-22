@@ -351,8 +351,8 @@ map <C-F3> :execute ShowVimrcMappings()<CR>
 " Make a menu for my maps ----------------------------------------------------------------------------------------------
 if has('gui')
 	:menutranslate clear
-	:so $VIMRUNTIME/vimfiles/delmenu.vim
-	:so $VIMRUNTIME/vimfiles/menu.vim
+	:so $VIM/vimfiles/delmenu.vim
+	:so $VIM/vimfiles/menu.vim
 
 	an My\ Menu.Insert\ date<TAB>F2 a<C-R>=strftime("%c")<CR><Esc> 
 	an My\ Menu.Toggle\ tabwidth<TAB>F11 :execute ToggleMyTabWidth()<CR>
