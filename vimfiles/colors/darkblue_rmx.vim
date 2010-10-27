@@ -1,7 +1,7 @@
 " Vim color file
 " Maintainer:	Bohdan Vlasyuk <bohdan@vstu.edu.ua>
 " Last Change:	2008 Jul 18
-
+"
 " darkblue -- for those who prefer dark background
 " [note: looks bit uglier with come terminal palettes,
 " but is fine on default linux console palette.]
@@ -19,17 +19,15 @@ endif
 
 let colors_name = "darkblue_rmx"
 
-"hi name			guifg=#xxxxxx		guibg=#xxxxxx		ctermbg=xxxxxxxx	ctermfg=xxxxx		cterm=xxxxxx				gui=xxxxxxxx			term=xxxxxxx
-
 hi Normal			guifg=#c0c0c0		guibg=#000040		ctermbg=Black		ctermfg=LightGray
 hi ErrorMsg			guifg=#ffffff		guibg=#287eff		ctermbg=LightBlue	ctermfg=White
-hi Visual			guifg=#8080ff		guibg=fg			ctermbg=fg			ctermfg=LightBlue	cterm=reverse				gui=reverse
-hi VisualNOS		guifg=#8080ff		guibg=fg			ctermbg=fg			ctermfg=LightBlue	cterm=reverse,underline		gui=reverse,underline
 hi Todo				guifg=#d14a14		guibg=#1248d1		ctermbg=DarkBlue	ctermfg=Red
 hi Search			guifg=#90fff0		guibg=#2050d0		ctermbg=DarkBlue	ctermfg=White		cterm=underline										term=underline
 hi IncSearch		guifg=#b0ffff		guibg=#2050d0		ctermfg=DarkBlue	ctermbg=Gray
+hi Visual			guifg=#8080ff		guibg=fg			ctermbg=fg			ctermfg=LightBlue	cterm=reverse				gui=reverse
+hi VisualNOS		guifg=#8080ff		guibg=fg			ctermbg=fg			ctermfg=LightBlue	cterm=reverse,underline		gui=reverse,underline
 
-hi SpecialKey		guifg=Grey50												ctermfg=DarkGrey
+hi SpecialKey		guifg=Grey30												ctermfg=DarkGrey
 hi Directory		guifg=Cyan													ctermfg=Cyan
 hi Title			guifg=Magenta												ctermfg=Magenta		cterm=bold					gui=none
 hi WarningMsg		guifg=Red													ctermfg=Red

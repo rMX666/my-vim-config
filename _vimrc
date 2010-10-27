@@ -27,6 +27,8 @@ set tabstop=4
 set shiftwidth=4
 set noexpandtab
 
+set formatoptions=crql
+
 " Function to switch between my lovely 2-char tabwidth with tabs-expandig 
 " and fucked up default tabwidth without tabs-expanding
 function! ToggleMyTabWidth()
