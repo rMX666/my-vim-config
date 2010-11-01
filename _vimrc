@@ -351,26 +351,28 @@ endfunction
 map <C-F3> :execute ShowVimrcMappings()<CR>
 
 " Make a menu for my maps ----------------------------------------------------------------------------------------------
-:menutranslate clear
-:so $VIMRUNTIME\delmenu.vim
-:so $VIMRUNTIME\menu.vim
+if has('gui')
+	:menutranslate clear
+	:so $VIM/vimfiles/delmenu.vim
+	:so $VIM/vimfiles/menu.vim
 
-an My\ Menu.Insert\ date<TAB>F2 a<C-R>=strftime("%c")<CR><Esc> 
-an My\ Menu.Toggle\ tabwidth<TAB>F11 :execute ToggleMyTabWidth()<CR>
-an My\ Menu.Toggle\ wrap<TAB>F3 :execute ToggleWrap()<CR>
-an My\ Menu.Toggle\ cursor\ column<TAB>F12 :set cursorcolumn!<CR>
-an My\ Menu.Toggle\ divider\ highlight<TAB>F4 mz:execute ToggleDividerHighlight()<CR>'z
-an My\ Menu.Clear\ search\ highlight<TAB>Space :silent noh<Bar>echo<CR>
-an My\ Menu.-SEP1- <Nop>
-an My\ Menu.Vimrc.Execute\ vimrc<TAB>,s :source $MYVIMRC<CR>
-an My\ Menu.Vimrc.Open\ vimrc\ in\ new\ tab<TAB>,vt :tabnew $MYVIMRC<CR>
-an My\ Menu.Vimrc.Open\ vimrc\ in\ new\ buffer<TAB>,v :new $MYVIMRC<CR>
-an My\ Menu.Tabs.Tab\ close<TAB>F5 :tabclose<CR>
-an My\ Menu.Tabs.Previous\ tab<TAB>F6 :tabprev<CR>
-an My\ Menu.Tabs.Next\ tab<TAB>F7 :tabnext<CR>
-an My\ Menu.Tabs.New\ tab<TAB>F8 :tabnew<CR>
-an My\ Menu.Plugins.NERD\ Tree.Show/Hide<TAB>C-F6 <ESC>:NERDTree<CR>
-an My\ Menu.Plugins.PHP\ Documentor.Add\ comment<TAB>C-P <ESC>:call PhpDocSingle()<CR>
+	an My\ Menu.Insert\ date<TAB>F2 a<C-R>=strftime("%c")<CR><Esc> 
+	an My\ Menu.Toggle\ tabwidth<TAB>F11 :execute ToggleMyTabWidth()<CR>
+	an My\ Menu.Toggle\ wrap<TAB>F3 :execute ToggleWrap()<CR>
+	an My\ Menu.Toggle\ cursor\ column<TAB>F12 :set cursorcolumn!<CR>
+	an My\ Menu.Toggle\ divider\ highlight<TAB>F4 mz:execute ToggleDividerHighlight()<CR>'z
+	an My\ Menu.Clear\ search\ highlight<TAB>Space :silent noh<Bar>echo<CR>
+	an My\ Menu.-SEP1- <Nop>
+	an My\ Menu.Vimrc.Execute\ vimrc<TAB>,s :source $MYVIMRC<CR>
+	an My\ Menu.Vimrc.Open\ vimrc\ in\ new\ tab<TAB>,vt :tabnew $MYVIMRC<CR>
+	an My\ Menu.Vimrc.Open\ vimrc\ in\ new\ buffer<TAB>,v :new $MYVIMRC<CR>
+	an My\ Menu.Tabs.Tab\ close<TAB>F5 :tabclose<CR>
+	an My\ Menu.Tabs.Previous\ tab<TAB>F6 :tabprev<CR>
+	an My\ Menu.Tabs.Next\ tab<TAB>F7 :tabnext<CR>
+	an My\ Menu.Tabs.New\ tab<TAB>F8 :tabnew<CR>
+	an My\ Menu.Plugins.NERD\ Tree.Show/Hide<TAB>C-F6 <ESC>:NERDTree<CR>
+	an My\ Menu.Plugins.PHP\ Documentor.Add\ comment<TAB>C-P <ESC>:call PhpDocSingle()<CR>
+endif
 
 " Plugin settings ------------------------------------------------------------------------------------------------------
 map <C-F5> <ESC>:BufExplorerVerticalSplit<CR>
