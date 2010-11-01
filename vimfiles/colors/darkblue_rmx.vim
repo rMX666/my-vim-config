@@ -33,7 +33,7 @@ hi Title			guifg=Magenta												ctermfg=Magenta		cterm=bold					gui=none
 hi WarningMsg		guifg=Red													ctermfg=Red
 hi WildMenu			guifg=Yellow		guibg=Black			ctermbg=Black		ctermfg=Yellow		cterm=none											term=none
 hi ModeMsg			guifg=#22cce2												ctermfg=LightBlue
-hi MoreMsg																		ctermfg=DarkGreen
+hi MoreMsg			guifg=DarkGreen												ctermfg=DarkGreen
 hi Question			guifg=Green													ctermfg=Green		cterm=none					gui=none
 hi NonText			guifg=#0030ff												ctermfg=DarkBlue
 
