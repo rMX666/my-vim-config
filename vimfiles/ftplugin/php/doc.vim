@@ -87,10 +87,9 @@ let g:pdv_cfg_CommentSingle = "//"
 
 " Default values
 let g:pdv_cfg_Type = "mixed"
-" let g:pdv_cfg_Package = "Framework"
 let g:pdv_cfg_Package = ""
 let g:pdv_cfg_Version = "//autogen//"
-let g:pdv_cfg_Author = ""
+let g:pdv_cfg_Author = "Stanin Mike aka _rMX_"
 let g:pdv_cfg_Copyright = "Copyright (c) 2010 All rights reserved."
 let g:pdv_cfg_License = "Do what the fuck you want license"
 
