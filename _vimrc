@@ -104,8 +104,11 @@ if has('gui')
 	set guioptions+=b
 	if has('win32')
 		set guifont=Consolas:h10:cRUSSIAN::
+		" Maximize goes automatically
 	elseif has('unix')
 		set guifont=Droid\ Sans\ Mono\ 10
+		" Maximization
+		set lines=999 columns=999
 	endif
 endif
 
@@ -330,26 +333,6 @@ set guitablabel=%!MyGuiTabLabel()
 set guitabtooltip=%!MyGuiTabToolTip()
 " Make own tab-headers <------------------------------------------------------------------------------------------------
 
-function! ShowVimrcMappings()
-	let mcnt = 0
-	let maplines = []
-	for linenr in range(0,line('$'))
-		let l = getline(linenr)
-		if match(l, 'highlight') != -1
-			call add(maplines, l)
-			let mcnt+=1
-		endif
-	endfor
-	let buffname = "maps"
-	call bufnr(buffname, 1)
-	exe 'sbuffer '.buffname
-	normal gg
-	normal dG
-	call append(0, maplines)
-	normal gg
-endfunction
-map <C-F3> :execute ShowVimrcMappings()<CR>
-
 " Make a menu for my maps ----------------------------------------------------------------------------------------------
 if has('gui')
 	:menutranslate clear
@@ -382,6 +365,7 @@ endif
 " Plugin settings ------------------------------------------------------------------------------------------------------
 map <C-F5> <ESC>:BufExplorerVerticalSplit<CR>
 map <C-F6> <ESC>:NERDTree<CR><CR>
+map <C-F3> <ESC>:call PhpDocSingle()<CR>
 
 let g:pdv_cfg_Author = 'Станин Михаил aka _rMX_'
 let g:pdv_cfg_Copyright = '(c)'
