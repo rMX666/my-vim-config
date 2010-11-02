@@ -367,8 +367,7 @@ map <C-F5> <ESC>:BufExplorerVerticalSplit<CR>
 map <C-F6> <ESC>:NERDTree<CR><CR>
 map <C-F3> <ESC>:call PhpDocSingle()<CR>
 
-let g:pdv_cfg_Author = 'Станин Михаил aka _rMX_'
+let g:pdv_cfg_Author = 'Stanin Mike aka _rMX_'
 let g:pdv_cfg_Copyright = '(c)'
-let g:pdv_cfg_License = 'Ололо! GPL2'
 
 let g:NERDMenuMode = 4
