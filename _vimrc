@@ -1,8 +1,11 @@
 " Last edit date: 21.10.2010 11:33:47
 set nocompatible
 
-" Disable fucking bell
-set visualbell t_vb=
+if has("unix")
+	" Disable fucking bell
+	set visualbell
+	set t_vb=
+endif
 
 colorscheme darkblue_rmx
 
