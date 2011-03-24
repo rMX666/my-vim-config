@@ -109,10 +109,10 @@ if has('gui')
 	set guioptions-=T "disable toolbar
 	set guioptions+=b
 	if has('win32')
-		set guifont=Consolas:h10:cRUSSIAN::
+		set guifont=Consolas:h12:cRUSSIAN::
 		" Maximize goes automatically
 	elseif has('unix')
-		set guifont=Droid\ Sans\ Mono\ 10
+		set guifont=Droid\ Sans\ Mono\ 12
 		" Maximization
 		set lines=999 columns=999
 	endif
