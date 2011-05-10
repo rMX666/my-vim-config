@@ -62,7 +62,6 @@ set listchars=tab:\|-,trail:.
 
 set smarttab
 set smartindent
-
 set autoindent
 
 " split window vertically
@@ -86,7 +85,7 @@ set backspace=indent,eol,start
 set whichwrap+=<,>,[,]
 
 set nobackup		" do not keep a backup file, use versions instead
-set history=100		" keep 50 lines of command line history
+set history=500		" keep 500 lines of command line history
 set ruler			" show the cursor position all the time
 set showcmd			" display incomplete commands
 
@@ -234,8 +233,7 @@ if !has("unix")
 endif
 
 " make a border right line
-set colorcolumn=+1
-set textwidth=120
+set colorcolumn=120
 
 " ----------------------------------------------------------------------------------------------------------------------
 " Make own tab-headers -->
