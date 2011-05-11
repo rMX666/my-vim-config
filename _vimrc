@@ -374,3 +374,5 @@ map <C-F6> <ESC>:NERDTree<CR><CR>
 map <C-F3> <ESC>:call PhpDocSingle()<CR>
 
 let g:NERDMenuMode = 4
+
+let g:syntastic_enable_signs=1
