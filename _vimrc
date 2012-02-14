@@ -108,10 +108,10 @@ if has('gui')
 	set guioptions-=T "disable toolbar
 	set guioptions+=b
 	if has('win32')
-		set guifont=Consolas:h12:cRUSSIAN::
+		set guifont=Consolas:h11:cRUSSIAN::
 		" Maximize goes automatically
 	elseif has('unix')
-		set guifont=Droid\ Sans\ Mono\ 12
+		set guifont=Droid\ Sans\ Mono\ 11
 		" Maximization
 		set lines=999 columns=999
 	endif
@@ -363,7 +363,8 @@ if has('gui')
 	an My\ Menu.Tabs.Next\ tab<TAB>F7 :tabnext<CR>
 	an My\ Menu.Tabs.New\ tab<TAB>F8 :tabnew<CR>
 	an My\ Menu.Plugins.NERD\ Tree.Show/Hide<TAB>C-F6 <ESC>:NERDTree<CR>
-	an My\ Menu.Plugins.PHP\ Documentor.Add\ comment<TAB>C-P <ESC>:call PhpDocSingle()<CR>
+	an My\ Menu.Plugins.Buffer\ explorer.Show/Hide<TAB>C-F5 <ESC>:BufExplorerVerticalSplit<CR>
+	an My\ Menu.Plugins.PHP\ Documentor.Add\ comment<TAB>C-F3 <ESC>:call PhpDocSingle()<CR>
 endif
 
 " Plugin settings ------------------------------------------------------------------------------------------------------
