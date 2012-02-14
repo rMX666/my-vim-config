@@ -1,6 +1,6 @@
 
 if !exists("g:DisableAutoPHPFolding")
-    let g:DisableAutoPHPFolding = 0
+    let g:DisableAutoPHPFolding = 1
 endif
 
 if !g:DisableAutoPHPFolding 

@@ -363,7 +363,6 @@ if has('gui')
 	an My\ Menu.Tabs.Next\ tab<TAB>F7 :tabnext<CR>
 	an My\ Menu.Tabs.New\ tab<TAB>F8 :tabnew<CR>
 	an My\ Menu.Plugins.NERD\ Tree.Show/Hide<TAB>C-F6 <ESC>:NERDTree<CR>
-	an My\ Menu.Plugins.Buffer\ explorer.Show/Hide<TAB>C-F5 <ESC>:BufExplorerVerticalSplit<CR>
 	an My\ Menu.Plugins.PHP\ Documentor.Add\ comment<TAB>C-F3 <ESC>:call PhpDocSingle()<CR>
 endif
 

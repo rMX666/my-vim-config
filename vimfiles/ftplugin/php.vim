@@ -52,15 +52,15 @@ call s:InitVariable("g:PIVPearStyle", 0)
 " Auto expand tabs to spaces
 " setlocal expandtab
 
-setlocal autoindent " Auto indent after a {
-setlocal smartindent
+"setlocal autoindent " Auto indent after a {
+"setlocal smartindent
 
 " Linewidth to 79, because of the formatoptions this is only valid for
 " comments
-setlocal textwidth=79
-set formatoptions=qrocb
+"setlocal textwidth=79
+"set formatoptions=qrocb
 
-setlocal nowrap 		" Do not wrap lines automatically
+"setlocal nowrap 		" Do not wrap lines automatically
 
 " Correct indentation after opening a phpdocblock and automatic * on every
 " line
@@ -88,7 +88,7 @@ vnoremap <silent> <plug>PIVphpAlign :call PhpAlign()<CR>
 " noremap ; :!php5 -l %<CR>
 
 " Map ; to "add ; to the end of the line, when missing"
-noremap <buffer> ; :s/\([^;]\)$/\1;/<cr>
+"noremap <buffer> ; :s/\([^;]\)$/\1;/<cr>
 
 " Map <ctrl>+p to single line mode documentation (in insert and command mode)
 "inoremap <buffer> <leader>d :call PhpDocSingle()<CR>i
@@ -97,23 +97,23 @@ noremap <buffer> ; :s/\([^;]\)$/\1;/<cr>
 "vnoremap <buffer> <leader>d :call PhpDocRange()<CR>
 
 " Map <CTRL>-H to search phpm for the function name currently under the cursor (insert mode only)
-inoremap <buffer> <C-H> <ESC>:!phpm <C-R>=expand("<cword>")<CR><CR>
+"inoremap <buffer> <C-H> <ESC>:!phpm <C-R>=expand("<cword>")<CR><CR>
 
 " }}}
 
 " {{{ Automatic close char mapping
 
-if g:PIVPearStyle
-	inoremap <buffer>  { {<CR>}<C-O>O
-	inoremap <buffer> ( (  )<LEFT><LEFT>
-else
-	inoremap  { {<CR>}<C-O>O
-	inoremap ( ()<LEFT>
-endif
+"if g:PIVPearStyle
+"	inoremap <buffer>  { {<CR>}<C-O>O
+"	inoremap <buffer> ( (  )<LEFT><LEFT>
+"else
+"	inoremap  { {<CR>}<C-O>O
+"	inoremap ( ()<LEFT>
+"endif
 
-inoremap <buffer> [ []<LEFT>
-inoremap <buffer> " ""<LEFT>
-inoremap <buffer> ' ''<LEFT>
+"inoremap <buffer> [ []<LEFT>
+"inoremap <buffer> " ""<LEFT>
+"inoremap <buffer> ' ''<LEFT>
 
 " }}} Automatic close char mapping
 
