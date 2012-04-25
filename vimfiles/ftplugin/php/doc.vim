@@ -83,6 +83,7 @@ let g:pdv_cfg_CommentHead = "/**"
 let g:pdv_cfg_Comment1 = " * "
 let g:pdv_cfg_Commentn = " * "
 let g:pdv_cfg_CommentTail = " */"
+let g:pdv_cfg_CommentEnd = "/* }}} */"
 let g:pdv_cfg_CommentSingle = "//"
 
 " Default values
