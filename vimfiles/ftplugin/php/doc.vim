@@ -145,7 +145,7 @@ let g:pdv_re_array = "^array *(.*"
 let g:pdv_re_float = '^[0-9.]\+'
 let g:pdv_re_int = '^[0-9]\+$'
 let g:pdv_re_string = "['\"].*"
-let g:pdv_re_bool = "[true false]"
+let g:pdv_re_bool = "true|false"
 
 let g:pdv_re_indent = '^\s*'
 
@@ -190,37 +190,6 @@ func! PhpDocRange() range
 endfunc
 
  " }}}
-" {{{ PhpDocFold()
-
-" func! PhpDocFold(name)
-" 	let l:startline = line(".")
-" 	let l:currentLine = l:startLine
-" 	let l:commentHead = escape(g:pdv_cfg_CommentHead, "*.");
-"	 let l:txtBOL = g:pdv_cfg_BOL . matchstr(l:name, '^\s*')
-" 	" Search above for comment start
-" 	while (l:currentLine > 1)
-" 		if (matchstr(l:commentHead, getline(l:currentLine)))
-" 			break;
-" 		endif
-" 		let l:currentLine = l:currentLine + 1
-" 	endwhile
-" 	" Goto 1 line above and open a newline
-"	 exe "norm! " . (l:currentLine - 1) . "Go\<ESC>"
-" 	" Write the fold comment
-"	 exe l:txtBOL . g:pdv_cfg_CommentSingle . " {"."{{ " . a:name . g:pdv_cfg_EOL
-" 	" Add another newline below that
-" 	exe "norm! o\<ESC>"
-" 	" Search for our comment line
-" 	let l:currentLine = line(".")
-" 	while (l:currentLine <= line("$"))
-" 		" HERE!!!!
-" 	endwhile
-" 	
-" 
-" endfunc
-
-
-" }}}
 
 " {{{ PhpDoc()
 
@@ -249,10 +218,6 @@ func! PhpDoc()
 
 	endif
 
-"	if g:pdv_cfg_folds == 1
-"		PhpDocFolds(l:result)
-"	endif
-
 	let &g:paste = l:paste
 
 	return l:result
@@ -264,15 +229,6 @@ endfunc
 func! PhpDocFuncEnd()
 
 	call append(line('.'), matchstr(getline('.'), '^\s*') . g:pdv_cfg_CommentEnd)
-endfunc
-" }}}
-" {{{ PhpDocFuncEndAuto()
-func! PhpDocFuncEndAuto()
-
-	call search('{')
-	call searchpair('{', '', '}')
-	call append(line('.'), matchstr(getline('.'), '^\s*') . g:pdv_cfg_CommentEnd)
-
 endfunc
 " }}}
 
@@ -309,8 +265,6 @@ func! PhpDocFunc()
 
 	" Local indent
 	let l:txtBOL = g:pdv_cfg_BOL . l:indent
-
-	exec l:txtBOL . "/* " . l:scope ." ".  funcname . "(" . l:params . ") {{" . "{ */ " . g:pdv_cfg_EOL
 
 	exe l:txtBOL . g:pdv_cfg_CommentHead . g:pdv_cfg_EOL
 	" added folding
@@ -356,7 +310,7 @@ func! PhpDocFunc()
 	" Close the comment block.
 	exe l:txtBOL . g:pdv_cfg_CommentTail . g:pdv_cfg_EOL
 
-	return l:modifier ." ". l:funcname . PhpDocFuncEndAuto()
+	return l:modifier ." ". l:funcname
 endfunc
 
 " }}}  
