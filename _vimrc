@@ -1,4 +1,3 @@
-" Last edit date: 21.10.2010 11:33:47
 set nocompatible
 
 if has("unix")
@@ -7,11 +6,15 @@ if has("unix")
 	set t_vb=
 endif
 
+" Startup pathogen
+filetype off
+call pathogen#helptags()
+call pathogen#runtime_append_all_bundles()
+filetype plugin indent on
+
 colorscheme darkblue_rmx
 
 syntax on
-filetype on
-filetype plugin on
 
 " number lines
 set number
@@ -375,3 +378,4 @@ map <C-F3> <ESC>:call PhpDocSingle()<CR>
 let g:NERDMenuMode = 4
 
 let g:syntastic_enable_signs=1
+
