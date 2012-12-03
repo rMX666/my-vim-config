@@ -2,7 +2,6 @@
 
 "Themes by color:
 
-
 "submenu black
 9000amenu &ColorSchemes.&Colors\ (210).black\ (61).adrian  :colo adrian<CR>
 9000amenu &ColorSchemes.&Colors\ (210).black\ (61).billw  :colo billw<CR>
@@ -499,28 +498,3 @@ amenu &ColorSchemes.&Names\ (210).X\ (4).xterm16  :colo xterm16<CR>
 amenu &ColorSchemes.&Names\ (210).Z\ (2).zellner  :colo zellner<CR>
 amenu &ColorSchemes.&Names\ (210).Z\ (2).*zenburn  :colo zenburn<CR>
 
-amenu &ColorSchemes.-Sep-	:
-amenu &ColorSchemes.Reload\ Menu	:ReloadColors<CR>
-amenu &ColorSchemes.Refresh\ Menu	:RefreshColors<CR>
-
-command! -nargs=0		ReloadColors		call <SID>ReloadColors()
-command! -nargs=0		RefreshColors		call <SID>RefreshColors()
-
-if !exists("g:running_ReloadColors")
-	function! <SID>ReloadColors()
-		let g:running_ReloadColors = 1
-		aunmenu &ColorSchemes
-		execute 'source C:\Program Files\Vim\vimfiles\plugin\ColorSchemes.vim'
-		unlet g:running_ReloadColors
-		echomsg 'Done Reloading C:\Program Files\Vim\vimfiles\plugin\ColorSchemes.vim'
-	endfunction
-endif
-if !exists("g:running_RefreshColors")
-	function! <SID>RefreshColors()
-		let g:running_RefreshColors = 1
-		call WriteColorSchemeMenu()
-		call <SID>ReloadColors()
-		unlet g:running_RefreshColors
-		echomsg 'Done Refreshing C:\Program Files\Vim\vimfiles\plugin\ColorSchemes.vim'
-	endfunction
-endif

@@ -51,13 +51,13 @@ call s:InitVariable("g:PIVPearStyle", 0)
 call s:InitVariable("g:PIVAutoClose", 0)
 
 " Auto expand tabs to spaces
-setlocal expandtab
-setlocal autoindent " Auto indent after a {
-setlocal smartindent
+"setlocal expandtab
+"setlocal autoindent " Auto indent after a {
+"setlocal smartindent
 
 " Linewidth to 79, because of the formatoptions this is only valid for
 " comments
-setlocal textwidth=79
+"setlocal textwidth=79
 set formatoptions=qrocb
 
 setlocal nowrap     " Do not wrap lines automatically
