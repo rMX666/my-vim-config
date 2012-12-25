@@ -58,7 +58,7 @@ call s:InitVariable("g:PIVAutoClose", 0)
 " Linewidth to 79, because of the formatoptions this is only valid for
 " comments
 "setlocal textwidth=79
-set formatoptions=qrocb
+"set formatoptions=qrocb
 
 setlocal nowrap     " Do not wrap lines automatically
 
