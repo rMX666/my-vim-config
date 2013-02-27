@@ -9,8 +9,15 @@ endif
 " Startup pathogen
 filetype off
 call pathogen#helptags()
-call pathogen#runtime_append_all_bundles()
+call pathogen#infect()
 filetype plugin indent on
+
+" Solarized Colorscheme Config
+" let g:solarized_contrast="high"
+" let g:solarized_visibility="low"
+" let g:solarized_hitrail=1
+" let g:solarized_menu=0
+" colorscheme solarized
 
 colorscheme darkblue_rmx
 
@@ -29,12 +36,16 @@ set imsearch=0
 " Switch
 inoremap <C-Q> <C-^>
 
+let mapleader = ","
+
 let g:my_tabwidth = 2 " This is my favorite tabwidth =)
 " tabwidth
 set tabstop=4
 " tabwidth to expand in spaces
 set shiftwidth=4
 set noexpandtab
+
+set path=.,,**
 
 "set formatoptions=crql
 
@@ -63,9 +74,15 @@ nmap <F11> :execute ToggleMyTabWidth()<CR>
 set list
 set listchars=tab:\|-,trail:.
 
-set smarttab
-set smartindent
-set autoindent
+function! SetSmartTab()
+	let l = line('.')
+	set smarttab
+	set smartindent
+	set autoindent
+	echo "SmartTab mode engaged!"
+	exec ':' . l
+endfunction
+nmap <F9> :execute SetSmartTab()<CR>
 
 " split window vertically
 set splitbelow
@@ -74,14 +91,18 @@ set splitright
 
 " use wildmenu ...
 set wildmenu
-" ... with auto-complete
 set wildcharm=<TAB>
+set wildignore+=.git,.svn " Version control
+
+" Show <> () [] {}
+set showmatch
 
 " Search and highlight search-results
-set showmatch
 set hlsearch
 set incsearch
 set ignorecase
+set smartcase
+set gdefault " Enable /g flag in substitution s/a/b/
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -139,8 +160,38 @@ function! ToggleWrap()
 endfunction
 map <F3> :execute ToggleWrap()<CR>
 
+function! FileSize()
+	let bytes = getfsize(expand("%:p"))
+	if bytes <= 0
+		return ""
+	endif
+	if bytes < 1024
+		return bytes . "B"
+	else
+		return (bytes / 1024) . "K"
+	endif
+endfunction
+
+function! CurDir()
+	return expand('%:p:~')
+endfunction
+
 set laststatus=2 "always show status
-set statusline=%<%F\ %y\ %{'Enc:\ '.&fileencoding}\ %m%r%=[%b\ 0x%B]\ %c%1*%V%*,%l/%1*%L%*\ %P\ %1*%o%*\ 
+set statusline=\ 
+set statusline+=\ %{'#'}%n:
+set statusline+=\ %y
+set statusline+=%<
+set statusline+=\ %{CurDir()}
+set statusline+=\ \[%{FileSize()}\]
+set statusline+=\ %m
+set statusline+=\ %{'Enc:\ '.&fileencoding}
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+set statusline+=%r%=
+set statusline+=\ %3.3(%c%)
+set statusline+=\ %3.9(%l/%L%)
+set statusline+=\ %2.3p%%\ \ 
 
 " line highlight
 nmap <F12> :set cursorcolumn!<CR>
@@ -170,10 +221,13 @@ map <F4> mz:execute ToggleDividerHighlight()<CR>'z
 
 " helpers for editing .vimrc
 " execute .vimrc
-nmap ,s :source $MYVIMRC<CR>
+nmap <Leader>s :source $MYVIMRC<CR>
 " edit .vimrc
-nmap ,vt :tabnew $MYVIMRC<CR>
-nmap ,v :new $MYVIMRC<CR>
+nmap <Leader>vt :tabnew $MYVIMRC<CR>
+
+command! Q q
+command! W w
+command! Wa wa
 
 " mappings for tabs
 map <F5> :tabclose<CR>
@@ -311,14 +365,14 @@ function! MyGuiTabToolTip()
 			let tt .= "\n"
 		endif
 		let name = bufname(bufnr)
-		if name == '' 
+		if name == ''
 			if getbufvar(bufnr, "&quickfix")
 				let name = "[Quick Fix]"
 			else
 				let name = "[No Name]"
 			endif
 		endif
-		let tt .= "	" . name
+		let tt .= "    " . name
 		if getbufvar(bufnr, "&modified")
 			let tt .= " [+]"
 		endif
@@ -365,17 +419,37 @@ if has('gui')
 	an My\ Menu.Tabs.Previous\ tab<TAB>F6 :tabprev<CR>
 	an My\ Menu.Tabs.Next\ tab<TAB>F7 :tabnext<CR>
 	an My\ Menu.Tabs.New\ tab<TAB>F8 :tabnew<CR>
-	an My\ Menu.Plugins.NERD\ Tree.Show/Hide<TAB>C-F6 <ESC>:NERDTree<CR>
+	an My\ Menu.Plugins.NERD\ Tree.Show/Hide<TAB>BS <ESC>:NERDTreeToggle<CR>
 	an My\ Menu.Plugins.Buffer\ explorer.Show/Hide<TAB>C-F5 <ESC>:BufExplorerVerticalSplit<CR>
 	an My\ Menu.Plugins.PHP\ Documentor.Add\ comment<TAB>C-F3 <ESC>:call PhpDocSingle()<CR>
 endif
 
 " Plugin settings ------------------------------------------------------------------------------------------------------
 map <C-F5> <ESC>:BufExplorerVerticalSplit<CR>
-map <C-F6> <ESC>:NERDTree<CR><CR>
+map <BS> <ESC>:NERDTreeToggle<CR>
 map <C-F3> <ESC>:call PhpDocSingle()<CR>
+map <Leader>l <ESC>:ll<CR>
+map <Leader>. <ESC>:lne<CR>
+map <Leader>ts :%s/\s\+$//e<CR>
+
+nmap gf :vertical wincmd f<CR>
+
+set pastetoggle=<Leader>p
+
+" n и N
+" когда бегаем по результатам поиска, то пусть они всегда будут в центре
+nmap n nzz
+nmap N Nzz
+nmap * *zz
+nmap # #zz
+nmap g* g*zz
+nmap g# g#zz
+
+" Resize splits when the window is resized
+au VimResized * exe "normal! \<c-w>="
 
 let g:NERDMenuMode = 4
 
 let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
 
