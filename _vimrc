@@ -27,7 +27,7 @@ endif
 	" Bundle {{{
 
 		" Zencoding
-		Bundle 'git://github.com/mattn/zencoding-vim.git'
+		Bundle 'git://github.com/mattn/emmet-vim.git'
 		" Provides easy code commenting
 		Bundle 'git://github.com/scrooloose/nerdcommenter.git'
 		" A tree explorer plugin
