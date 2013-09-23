@@ -54,6 +54,8 @@ endif
 		Bundle 'git://github.com/pangloss/vim-javascript.git'
 		" Syntax for jQuery keywords and css selectors
 		Bundle 'git://github.com/itspriddle/vim-jquery.git'
+		" Javascript documentor
+		Bundle 'git://github.com/heavenshell/vim-jsdoc.git'
 
 		" JSON
 		Bundle 'git://github.com/leshill/vim-json.git'
