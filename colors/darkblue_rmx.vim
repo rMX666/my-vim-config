@@ -10,8 +10,6 @@
 " By: _rMX_
 " Description: Support of version 7.3
 
-set bg=dark
-
 hi clear
 if exists("syntax_on")
 	syntax reset
@@ -70,7 +68,6 @@ hi PmenuSbar		guibg=DarkGray		guifg=Blue
 hi PmenuThumb							guifg=#c0c0c0
 
 " suggested by _rMX_ 12.10.2010 16:09:18 =)
-hi User1			guibg=DarkGrey		guifg=Grey30		ctermbg=White		ctermfg=Blue
 hi CursorLine		guibg=MidnightBlue						ctermbg=DarkBlue	ctermfg=NONE		cterm=NONE		term=NONE
 hi CursorColumn		guibg=MidnightBlue						ctermbg=DarkBlue	ctermfg=NONE
 hi ColorColumn		guibg=DarkGrey							ctermbg=Grey
