@@ -52,21 +52,16 @@ endif
 		" Javascript
 		" Vastly improved vim's javascript indentation
 		Bundle 'git://github.com/pangloss/vim-javascript.git'
-		" Syntax for jQuery keywords and css selectors
-		Bundle 'git://github.com/itspriddle/vim-jquery.git'
 		" Javascript documentor
 		Bundle 'git://github.com/heavenshell/vim-jsdoc.git'
 
-		" JSON
-		Bundle 'git://github.com/leshill/vim-json.git'
-
 		" PIV - PHP Integration environment for Vim
-		Bundle 'git://github.com/spf13/PIV.git'
+"		Bundle 'git://github.com/spf13/PIV.git'
 
-		" PHP Syntax
-"		Bundle 'git://github.com/vim-scripts/php.vim--Garvin.git'
-		" PHP Indenting
-"		Bundle 'git://github.com/2072/PHP-Indenting-for-VIm.git'
+		" Status line extention
+		Bundle 'git://github.com/bling/vim-airline.git'
+		" Cool git browser
+		Bundle 'git://github.com/tpope/vim-fugitive.git'
 
 	" }}}
 
@@ -127,6 +122,14 @@ endif
 		" First use dos file format (CRLF)
 		set fileformats=dos,unix
 	endif
+	" Editor encoding - UTF-8
+	set encoding=utf-8
+	" Set messages to english
+	language messages en
+	" Reset menu
+	source $VIMRUNTIME/delmenu.vim
+	set langmenu=ru_RU.UTF-8
+	source $VIMRUNTIME/menu.vim
 	" File endcoding detection sequence - first try UTF-8, than Windows 1251, etc...
 	set fileencodings=utf-8,cp1251,koi8-r,cp866
 	" Use enhanced command line completion
@@ -148,7 +151,7 @@ endif
 			" Enable bottom scroll
 			set guioptions+=b
 			if has('win32')
-				set guifont=Consolas:h11:cRUSSIAN::
+				set guifont=Consolas\ for\ Powerline:h11:cRUSSIAN::
 				" Maximize goes automatically on windows (with plugin 'maximize')
 			elseif has('unix')
 				set guifont=Droid\ Sans\ Mono\ 11
@@ -211,38 +214,25 @@ endif
 
 " Status line {{{
 
-	function! FileSize()
-		let bytes = getfsize(expand("%:p"))
-		if bytes <= 0
-			return ""
-		endif
-		if bytes < 1024
-			return bytes . "B"
-		else
-			return (bytes / 1024) . "K"
-		endif
-	endfunction
-
-	function! CurDir()
-		return expand('%:p:~')
-	endfunction
-
 	set laststatus=2 "always show status
-	set statusline=\ 
-	set statusline+=\ %{'#'}%n: 
-	set statusline+=\ %y
-	set statusline+=%<
-	set statusline+=\ %{CurDir()}
-	set statusline+=\ \[%{FileSize()}\]
-	set statusline+=\ %m
-	set statusline+=\ %{'Enc:\ '.&fileencoding}
-	set statusline+=%#warningmsg#
-	set statusline+=%{SyntasticStatuslineFlag()}
-	set statusline+=%*
-	set statusline+=%r%=
-	set statusline+=\ %3.3(%c%)
-	set statusline+=\ %3.9(%l/%L%)
-	set statusline+=\ %2.3p%%\ \ 
+
+	" Airline {{{
+
+		if !exists('g:airline_symbols')
+			let g:airline_symbols = {}
+		endif
+
+		let g:airline_left_sep = ''
+		let g:airline_left_alt_sep = ''
+		let g:airline_right_sep = ''
+		let g:airline_right_alt_sep = ''
+		let g:airline_symbols.branch = ''
+		let g:airline_symbols.readonly = ''
+		let g:airline_symbols.linenr = ''
+		let g:airline_detect_iminsert=1
+		let g:airline_theme='dark'
+
+	" }}}
 
 " }}}
 
@@ -315,11 +305,13 @@ endif
 	if !has("unix")
 		set guioptions-=a
 	endif
+	" Replace popup dialogs with console
+	set guioptions+=c
 
 	" Vertical split on go-to file
 	nmap gf :vertical wincmd f<CR>
 
-	" N и n
+	" N Рё n
 	" Search results centered on walkthough
 	nmap n nzz
 	nmap N Nzz
