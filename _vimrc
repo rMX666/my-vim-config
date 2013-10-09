@@ -43,11 +43,11 @@ endif
 		Bundle 'git://github.com/gregsexton/MatchTag.git'
 
 		" CSS3 syntax support
-		Bundle 'git://github.com/hail2u/vim-css3-syntax.git'
+"		Bundle 'git://github.com/hail2u/vim-css3-syntax.git'
 		" Highlight colors in css files
-		Bundle 'git://github.com/ap/vim-css-color.git'
-		Bundle 'git://github.com/groenewege/vim-less.git'
-		Bundle 'git://github.com/miripiruni/vim-better-css-indent.git'
+"		Bundle 'git://github.com/ap/vim-css-color.git'
+"		Bundle 'git://github.com/groenewege/vim-less.git'
+"		Bundle 'git://github.com/miripiruni/vim-better-css-indent.git'
 
 		" Javascript
 		" Vastly improved vim's javascript indentation
@@ -100,20 +100,6 @@ endif
 	set showtabline=2
 	" Don't wrap lines
 	set nowrap
-	" Use following characters to display service chars
-	set list
-	" Char for service characters
-	set listchars=tab:\|-,trail:.
-	" Show matching <> () [] {}
-	set showmatch
-	" Line hightlight
-	set cursorline
-	" Make a border right line
-	set colorcolumn=120
-	" Do smart indenting when starting a new line
-	set smartindent
-	" Copy indent from current line when starting a new line
-	set autoindent
 	" Codepage sequence and file formats for nix in win is diffedent
 	if has('unix')
 		" First use nix file format (CR)
@@ -132,6 +118,22 @@ endif
 	source $VIMRUNTIME/menu.vim
 	" File endcoding detection sequence - first try UTF-8, than Windows 1251, etc...
 	set fileencodings=utf-8,cp1251,koi8-r,cp866
+	" Use following characters to display service chars
+	set list
+	" Char for service characters
+	set listchars=tab:\|-,trail:.
+	" Buffer splitter, fold and diff fill chars
+	set fillchars=stl:\ ,stlnc:\ ,vert:\ ,diff:—,fold:—
+	" Show matching <> () [] {}
+	set showmatch
+	" Line hightlight
+	set cursorline
+	" Make a border right line
+	set colorcolumn=120
+	" Do smart indenting when starting a new line
+	set smartindent
+	" Copy indent from current line when starting a new line
+	set autoindent
 	" Use enhanced command line completion
 	set wildmenu
 	" Completion key to be used in commands
@@ -169,9 +171,9 @@ endif
 	" Do not keep backup files
 	set nobackup
 	" Do not keep swap files
-	set noswapfile
+"	set noswapfile
 	" Keep 9999 lines of command line history
-	set history=9999
+	set history=500
 	" Allow backspacing over everything in insert mode
 	set backspace=indent,eol,start
 	" Wrap cursor position
