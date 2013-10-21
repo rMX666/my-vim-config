@@ -257,6 +257,48 @@ endif
 	map <F7> :tabnext<CR>
 	map <F8> :tabnew<CR>
 
+	" Enable/disable smart/auto indent
+	function! g:toggleAi()
+		if &smartindent == 1
+			:set nosmartindent
+			:set noautoindent
+			echo "Disabled smart indent"
+		else
+			:set smartindent
+			:set autoindent
+			echo "Enabled smart indent"
+		endif
+	endfunction
+	map <F9> :call g:toggleAi()<CR>
+
+	" Toggle indent width
+	let s:currWidth = "4t"
+	function! g:setIndentWidth(w)
+		let l:width = substitute(a:w, '^\([0-9]\+\).*$', '\1', '')
+		let l:tabs = substitute(a:w, '^[0-9]\+\(t\?\)$', '\1', '')
+
+		execute 'set tabstop=' . l:width
+		execute 'set shiftwidth=' . l:width
+		if l:tabs == 't'
+			set noexpandtab
+		else
+			set expandtab
+		endif
+		let s:currWidth = a:w
+		echo "Current tab-width: " . a:w
+	endfunction
+
+	function! g:toggleIndentWidth()
+		if s:currWidth == "4t"
+			call g:setIndentWidth("8t")
+		elseif s:currWidth == "8t"
+			call g:setIndentWidth("2")
+		elseif s:currWidth == "2"
+			call g:setIndentWidth("4t")
+		endif
+	endfunction
+	nmap <F11> :call g:toggleIndentWidth()<CR>
+
 	" Insert new line without entering insert mode
 	nmap <S-Enter> O<Esc>
 	nmap <CR> o<Esc>
@@ -472,6 +514,8 @@ endif
 	" }}}
 
 	" Emmet.vim (Zencoding) {{{
+
+		let g:user_emmet_leader_key = '<C-z>'
 
 		let g:user_emmet_settings = {
 		\  'php' : {
