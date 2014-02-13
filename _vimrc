@@ -113,12 +113,14 @@ endif
 	endif
 	" Editor encoding - UTF-8
 	set encoding=utf-8
-	" Set messages to english
-	language messages en
-	" Reset menu
-	source $VIMRUNTIME/delmenu.vim
-	set langmenu=ru_RU.UTF-8
-	source $VIMRUNTIME/menu.vim
+	if has("gui")
+		" Set messages to english
+		language messages en
+		" Reset menu
+		source $VIMRUNTIME/delmenu.vim
+		set langmenu=ru_RU.UTF-8
+		source $VIMRUNTIME/menu.vim
+	endif
 	" File endcoding detection sequence - first try UTF-8, than Windows 1251, etc...
 	set fileencodings=utf-8,cp1251,koi8-r,cp866
 	" Use following characters to display service chars
@@ -131,8 +133,10 @@ endif
 	set showmatch
 	" Line hightlight
 	set cursorline
-	" Make a border right line
-	set colorcolumn=120
+	if v:version >= 703
+		" Make a border right line
+		set colorcolumn=120
+	endif
 	" Do smart indenting when starting a new line
 	set smartindent
 	" Copy indent from current line when starting a new line
@@ -539,9 +543,14 @@ endif
 	" Solarized.vim {{{
 
 		let g:solarized_termcolors=16
-		let g:solarized_contrast="high"
 		let g:solarized_visibility="low"
-		let g:solarized_menu=1
+		if has("gui")
+			let g:solarized_contrast="high"
+			let g:solarized_menu=1
+		else
+			let g:solarized_termtrans=1
+			let g:solarized_hitrail=1
+		endif
 
 		try
 			call togglebg#map("<F10>")
