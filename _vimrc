@@ -63,6 +63,9 @@ endif
 		" Cool git browser
 		Bundle 'git://github.com/tpope/vim-fugitive.git'
 
+		" Solarized theme
+		Bundle 'git://github.com/altercation/vim-colors-solarized.git'
+
 	" }}}
 
 	" Required!
@@ -75,7 +78,7 @@ endif
 	" Enable syntax highlight
 	syntax on
 	" Set colorscheme to my modification of dark blue
-	colorscheme darkblue_rmx
+"	colorscheme darkblue_rmx
 	" Background is dark
 	set background=dark
 	" Number lines
@@ -243,10 +246,11 @@ endif
 	" Start of user maps
 	let mapleader = ","
 
-	" Execute .vimrc
-	nmap <Leader>s :source $MYVIMRC<CR>
 	" Edit .vimrc
 	nmap <Leader>v :tabnew $MYVIMRC<CR>
+	" Substitute with \v
+	nmap <Leader>s :%s/\v/<left>
+	vmap <Leader>s :s/\v/<left>
 
 	" Remove trailing spaces
 	map <Leader>ts :%s/\s\+$//e<CR>
@@ -529,6 +533,28 @@ endif
 		\    'extends' : 'html',
 		\  },
 		\}
+
+	" }}}
+
+	" Solarized.vim {{{
+
+		let g:solarized_termcolors=16
+		let g:solarized_contrast="high"
+		let g:solarized_visibility="low"
+		let g:solarized_menu=1
+
+		try
+			call togglebg#map("<F10>")
+		catch /^Vim\%((\a\+)\)\=:E117/
+			" :(
+		endtry
+
+		set background=dark
+		try
+			colorscheme solarized
+		catch /^Vim\%((\a\+)\)\=:E185/
+			echo "Solarized theme not found. Run :BundleInstall"
+		endtry
 
 	" }}}
 
