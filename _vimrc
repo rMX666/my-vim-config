@@ -268,7 +268,7 @@ endif
 	let mapleader = ","
 
 	" Function to get my vim rc or default if not found
-	function! g:getVimRc()
+	function! s:getVimrc()
 		let vimrc_home = ''
 		if has('win32')
 			let vimrc_home = expand('~/.vim/_vimrc')
@@ -283,8 +283,18 @@ endif
 		return $MYVIMRC
 	endfunction
 
+	" If current buffer is new and empty - open vimrc in it,
+	" else open in new tab
+	function! g:openVimrc()
+		if bufname('%') == '' && line('$') == 1 && getline(1) == ''
+			execute ":edit " . s:getVimrc()
+		else
+			execute ":tabnew " . s:getVimrc()
+		endif
+	endfunction
+
 	" Edit .vimrc
-	nmap <Leader>v :exec ":tabnew " . g:getVimRc()<CR>
+	nmap <Leader>v :call g:openVimrc()<CR>
 	" Substitute with \v
 	nmap <Leader>s :%s/\v/<left>
 	vmap <Leader>s :s/\v/<left>
