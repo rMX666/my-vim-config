@@ -55,9 +55,6 @@ endif
 		" Javascript documentor
 		Bundle 'git://github.com/heavenshell/vim-jsdoc.git'
 
-		" PIV - PHP Integration environment for Vim
-"		Bundle 'git://github.com/spf13/PIV.git'
-
 		" Status line extention
 		Bundle 'git://github.com/bling/vim-airline.git'
 		" Cool git browser
@@ -65,6 +62,13 @@ endif
 
 		" Solarized theme
 		Bundle 'git://github.com/altercation/vim-colors-solarized.git'
+
+		" Ruby
+		if has('ruby')
+			Bundle 'vim-ruby/vim-ruby'
+			Bundle 'tpope/vim-rails'
+			Bundle 'tpope/vim-rake'
+		endif
 
 	" }}}
 
