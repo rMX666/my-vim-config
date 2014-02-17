@@ -267,8 +267,24 @@ endif
 	" Start of user maps
 	let mapleader = ","
 
+	" Function to get my vim rc or default if not found
+	function! g:getVimRc()
+		let vimrc_home = ''
+		if has('win32')
+			let vimrc_home = expand('~/.vim/_vimrc')
+		elseif has('unix')
+			let vimrc_home = expand('~/.vimrc')
+		endif
+
+		if filereadable(vimrc_home)
+			return vimrc_home
+		endif
+
+		return $MYVIMRC
+	endfunction
+
 	" Edit .vimrc
-	nmap <Leader>v :tabnew $MYVIMRC<CR>
+	nmap <Leader>v :exec ":tabnew " . g:getVimRc()<CR>
 	" Substitute with \v
 	nmap <Leader>s :%s/\v/<left>
 	vmap <Leader>s :s/\v/<left>
