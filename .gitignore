@@ -1,2 +1,5 @@
 bundle/*
 !bundle/.keep
+
+*.swp
+*.~*
