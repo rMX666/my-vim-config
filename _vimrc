@@ -16,8 +16,21 @@ endif
 		set rtp+=~/.vim
 	endif
 
+	" Vundle path
+	let s:vundle = expand("~/.vim/bundle/vundle")
+
+	" Check vundle and try to install if not found
+	if !isdirectory(s:vundle)
+		echo "Vundle does not exists! Trying to get it..."
+		echo system('git clone --recursive https://github.com/gmarik/vundle.git "' . s:vundle . '"')
+		if v:shell_error
+			echo "Error: Clone finished with error."
+			finish
+		endif
+	endif
+
 	" Add Vundle to runtime path
-	set rtp+=~/.vim/bundle/vundle/
+	set rtp+=s:vundle
 	call vundle#rc()
 
 	" Let Vundle manage Vundle
