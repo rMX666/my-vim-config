@@ -30,7 +30,7 @@ endif
 	endif
 
 	" Add Vundle to runtime path
-	set rtp+=s:vundle
+	:execute "set rtp+=" . s:vundle
 	call vundle#rc()
 
 	" Let Vundle manage Vundle
