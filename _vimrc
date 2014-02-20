@@ -78,7 +78,6 @@ endif
 
 		" Ruby
 		if has('ruby')
-			Bundle 'vim-ruby/vim-ruby'
 			Bundle 'tpope/vim-rails'
 			Bundle 'tpope/vim-rake'
 		endif
