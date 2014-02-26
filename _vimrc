@@ -299,7 +299,7 @@ endif
 	vmap <Leader>s :s/\v/<left>
 
 	" Substitute highlighted text
-	vmap <Leader>r "hy :%s/\v<C-r>h//g<left><left><left>
+	vmap <Leader>r "hy :%s/<C-r>h//g<left><left>
 
 	" Remove trailing spaces
 	map <Leader>ts :%s/\s\+$//e<CR>
