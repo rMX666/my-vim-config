@@ -284,7 +284,7 @@ endif
 
 	" If current buffer is new and empty - open vimrc in it,
 	" else open in new tab
-	function! g:openVimrc()
+	function! g:OpenVimrc()
 		if bufname('%') == '' && line('$') == 1 && getline(1) == ''
 			execute ":edit " . s:getVimrc()
 		else
@@ -293,7 +293,7 @@ endif
 	endfunction
 
 	" Edit .vimrc
-	nmap <Leader>v :call g:openVimrc()<CR>
+	nmap <Leader>v :call g:OpenVimrc()<CR>
 	" Substitute with \v
 	nmap <Leader>s :%s/\v/<left>
 	vmap <Leader>s :s/\v/<left>
@@ -311,7 +311,7 @@ endif
 	map <F8> :tabnew<CR>
 
 	" Enable/disable smart/auto indent
-	function! g:toggleAi()
+	function! g:ToggleAi()
 		if &smartindent == 1
 			:set nosmartindent
 			:set noautoindent
@@ -322,11 +322,11 @@ endif
 			echo "Enabled smart indent"
 		endif
 	endfunction
-	map <F9> :call g:toggleAi()<CR>
+	map <F9> :call g:ToggleAi()<CR>
 
 	" Toggle indent width
 	let s:currWidth = "4t"
-	function! g:setIndentWidth(w)
+	function! g:SetIndentWidth(w)
 		let l:width = substitute(a:w, '^\([0-9]\+\).*$', '\1', '')
 		let l:tabs = substitute(a:w, '^[0-9]\+\(t\?\)$', '\1', '')
 
@@ -341,16 +341,16 @@ endif
 		echo "Current tab-width: " . a:w
 	endfunction
 
-	function! g:toggleIndentWidth()
+	function! g:ToggleIndentWidth()
 		if s:currWidth == "4t"
-			call g:setIndentWidth("8t")
+			call g:SetIndentWidth("8t")
 		elseif s:currWidth == "8t"
-			call g:setIndentWidth("2")
+			call g:SetIndentWidth("2")
 		elseif s:currWidth == "2"
-			call g:setIndentWidth("4t")
+			call g:SetIndentWidth("4t")
 		endif
 	endfunction
-	nmap <F11> :call g:toggleIndentWidth()<CR>
+	nmap <F11> :call g:ToggleIndentWidth()<CR>
 
 	" Insert new line without entering insert mode
 	nmap <S-Enter> O<Esc>
