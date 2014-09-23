@@ -40,46 +40,36 @@ endif
 	" Bundle {{{
 
 		" Zencoding
-		Bundle 'git://github.com/mattn/emmet-vim.git'
-		" Provides easy code commenting
-		Bundle 'git://github.com/scrooloose/nerdcommenter.git'
+		Bundle 'mattn/emmet-vim'
 		" A tree explorer plugin
-		Bundle 'git://github.com/scrooloose/nerdtree.git'
+		Bundle 'scrooloose/nerdtree'
 		" Syntax checker
-		Bundle 'git://github.com/scrooloose/syntastic.git'
+		Bundle 'scrooloose/syntastic'
 		" Matchit
-		Bundle 'git://github.com/vim-scripts/matchit.zip.git'
+		Bundle 'vim-scripts/matchit.zip'
 
-		" HTML5 omnicomplete and syntax
-		Bundle 'git://github.com/othree/html5.vim.git'
-		Bundle 'git://github.com/hokaccha/vim-html5validator.git'
-		Bundle 'git://github.com/gregsexton/MatchTag.git'
+		" PHP + Html correct indentation
+		Bundle 'captbaritone/better-indent-support-for-php-with-html'
 
-		" CSS3 syntax support
-"		Bundle 'git://github.com/hail2u/vim-css3-syntax.git'
 		" Highlight colors in css files
-"		Bundle 'git://github.com/ap/vim-css-color.git'
-"		Bundle 'git://github.com/groenewege/vim-less.git'
-"		Bundle 'git://github.com/miripiruni/vim-better-css-indent.git'
+		Bundle 'ap/vim-css-color'
 
-		" Javascript
-		" Vastly improved vim's javascript indentation
-		Bundle 'git://github.com/pangloss/vim-javascript.git'
 		" Javascript documentor
-		Bundle 'git://github.com/heavenshell/vim-jsdoc.git'
+		Bundle 'heavenshell/vim-jsdoc'
 
 		" Status line extention
-		Bundle 'git://github.com/bling/vim-airline.git'
+		Bundle 'bling/vim-airline'
 		" Cool git browser
-		Bundle 'git://github.com/tpope/vim-fugitive.git'
+		Bundle 'tpope/vim-fugitive'
 
 		" Solarized theme
-		Bundle 'git://github.com/altercation/vim-colors-solarized.git'
+		Bundle 'altercation/vim-colors-solarized'
 
 		" Ruby
 		if has('ruby')
 			Bundle 'tpope/vim-rails'
 			Bundle 'tpope/vim-rake'
+			Bundle 'tpope/vim-bundler'
 		endif
 
 	" }}}
