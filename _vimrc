@@ -165,6 +165,10 @@ endif
 			set guioptions-=T
 			" Enable bottom scroll
 			set guioptions+=b
+			" Replace popup dialogs with console
+			set guioptions+=c
+			" Disable menu by default
+			set guioptions-=m
 			if has('win32')
 				set guifont=Consolas\ for\ Powerline:h11:cRUSSIAN::
 				" Maximize goes automatically on windows (with plugin 'maximize')
@@ -392,8 +396,15 @@ endif
 	if !has("unix")
 		set guioptions-=a
 	endif
-	" Replace popup dialogs with console
-	set guioptions+=c
+
+	function! g:ToggleMenu()
+		if &guioptions =~# "m"
+			set guioptions-=m
+		else
+			set guioptions+=m
+		endif
+	endfunction
+	nmap <Leader>m :call g:ToggleMenu()<CR>
 
 	" Vertical split on go-to file
 	nmap gf :vertical wincmd f<CR>
