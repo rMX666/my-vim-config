@@ -35,41 +35,41 @@ endif
 
 	" Let Vundle manage Vundle
 	" Required!
-	Bundle 'gmarik/vundle'
+	Plugin 'gmarik/vundle'
 
-	" Bundle {{{
+	" Plugin {{{
 
 		" Zencoding
-		Bundle 'mattn/emmet-vim'
+		Plugin 'mattn/emmet-vim'
 		" A tree explorer plugin
-		Bundle 'scrooloose/nerdtree'
+		Plugin 'scrooloose/nerdtree'
 		" Syntax checker
-		Bundle 'scrooloose/syntastic'
+		Plugin 'scrooloose/syntastic'
 		" Matchit
-		Bundle 'vim-scripts/matchit.zip'
+		Plugin 'vim-scripts/matchit.zip'
 
 		" PHP + Html correct indentation
-		Bundle 'captbaritone/better-indent-support-for-php-with-html'
+		Plugin 'captbaritone/better-indent-support-for-php-with-html'
 
 		" Highlight colors in css files
-		Bundle 'ap/vim-css-color'
+		Plugin 'ap/vim-css-color'
 
 		" Javascript documentor
-		Bundle 'heavenshell/vim-jsdoc'
+		Plugin 'heavenshell/vim-jsdoc'
 
 		" Status line extention
-		Bundle 'bling/vim-airline'
+		Plugin 'bling/vim-airline'
 		" Cool git browser
-		Bundle 'tpope/vim-fugitive'
+		Plugin 'tpope/vim-fugitive'
 
 		" Solarized theme
-		Bundle 'altercation/vim-colors-solarized'
+		Plugin 'altercation/vim-colors-solarized'
 
 		" Ruby
 		if has('ruby')
-			Bundle 'tpope/vim-rails'
-			Bundle 'tpope/vim-rake'
-			Bundle 'tpope/vim-bundler'
+			Plugin 'tpope/vim-rails'
+			Plugin 'tpope/vim-rake'
+			Plugin 'tpope/vim-bundler'
 		endif
 
 	" }}}
@@ -608,7 +608,7 @@ endif
 		try
 			colorscheme solarized
 		catch /^Vim\%((\a\+)\)\=:E185/
-			echo "Solarized theme not found. Run :BundleInstall"
+			echo "Solarized theme not found. Run :PluginInstall"
 		endtry
 
 	" }}}
