@@ -53,6 +53,8 @@ endif
 		Plugin 'tpope/vim-repeat'
 		" Comment things out
 		Plugin 'tpope/vim-commentary'
+		" Fuzzy search
+		Plugin 'ctrlpvim/ctrlp.vim'
 
 		" PHP + Html correct indentation
 		Plugin 'captbaritone/better-indent-support-for-php-with-html'
