@@ -47,6 +47,8 @@ endif
 		Plugin 'scrooloose/syntastic'
 		" Matchit
 		Plugin 'vim-scripts/matchit.zip'
+		" Surround
+		Plugin 'tpope/vim-surround'
 
 		" PHP + Html correct indentation
 		Plugin 'captbaritone/better-indent-support-for-php-with-html'
