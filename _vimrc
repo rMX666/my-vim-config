@@ -49,6 +49,8 @@ endif
 		Plugin 'vim-scripts/matchit.zip'
 		" Surround
 		Plugin 'tpope/vim-surround'
+		" Repeat
+		Plugin 'tpope/vim-repeat'
 
 		" PHP + Html correct indentation
 		Plugin 'captbaritone/better-indent-support-for-php-with-html'
