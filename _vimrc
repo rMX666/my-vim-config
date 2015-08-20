@@ -51,6 +51,8 @@ endif
 		Plugin 'tpope/vim-surround'
 		" Repeat
 		Plugin 'tpope/vim-repeat'
+		" Comment things out
+		Plugin 'tpope/vim-commentary'
 
 		" PHP + Html correct indentation
 		Plugin 'captbaritone/better-indent-support-for-php-with-html'
