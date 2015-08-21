@@ -3,3 +3,6 @@ bundle/*
 
 *.swp
 *.~*
+
+backups/*
+!backups/.keep

@@ -91,8 +91,6 @@ endif
 
 	" Enable syntax highlight
 	syntax on
-	" Set colorscheme to my modification of dark blue
-"	colorscheme darkblue_rmx
 	" Background is dark
 	set background=dark
 	" Number lines
@@ -163,6 +161,8 @@ endif
 	set wildignore+=.git,.svn
 	" Binary images
 	set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
+	" Don't redraw while executing macros (good performance config)
+	set lazyredraw
 
 	" GUI options {{{
 
@@ -204,14 +204,21 @@ endif
 	" Wrap cursor position
 	set whichwrap+=<,>,[,]
 
+	" Persistent Undo
+	" Keep undo history across sessions, by storing in file.
+	" Only works all the time.
+	if has('persistent_undo')
+		set undodir=~/.vim/backups
+		set undofile
+	endif
+
 " }}}
 
 " Folding {{{
 
-	set foldenable
+	set nofoldenable
 	set foldmethod=syntax
 	set foldcolumn=2
-	set nofoldenable
 	set foldlevel=1
 
 " }}}
@@ -236,30 +243,6 @@ endif
 	set ignorecase
 	set smartcase
 	set gdefault " Enable /g flag in substitution s/a/b/
-
-" }}}
-
-" Status line {{{
-
-	set laststatus=2 "always show status
-
-	" Airline {{{
-
-		if !exists('g:airline_symbols')
-			let g:airline_symbols = {}
-		endif
-
-		let g:airline_left_sep = ''
-		let g:airline_left_alt_sep = ''
-		let g:airline_right_sep = ''
-		let g:airline_right_alt_sep = ''
-		let g:airline_symbols.branch = ''
-		let g:airline_symbols.readonly = ''
-		let g:airline_symbols.linenr = ''
-		let g:airline_detect_iminsert=1
-		let g:airline_theme='dark'
-
-	" }}}
 
 " }}}
 
@@ -556,14 +539,6 @@ endif
 
 " Plugins {{{
 
-	" PIV {{{
-
-		" Disable php folding
-		let g:DisableAutoPHPFolding = 1
-		let php_folding = 0
-
-	" }}}
-
 	" NerdTree {{{
 
 		nmap <BS> :NERDTreeToggle<CR>
@@ -618,6 +593,40 @@ endif
 		catch /^Vim\%((\a\+)\)\=:E185/
 			echo "Solarized theme not found. Run :PluginInstall"
 		endtry
+
+	" }}}
+
+" }}}
+
+" Status line {{{
+
+	set laststatus=2 "always show status
+
+	" Airline {{{
+
+		if !exists('g:airline_symbols')
+			let g:airline_symbols = {}
+		endif
+
+		if has('gui')
+			let g:airline_left_sep = ''
+			let g:airline_left_alt_sep = ''
+			let g:airline_right_sep = ''
+			let g:airline_right_alt_sep = ''
+			let g:airline_symbols.branch = ''
+			let g:airline_symbols.readonly = ''
+			let g:airline_symbols.linenr = ''
+			let g:airline_detect_iminsert=1
+		else
+			let g:airline_left_sep = '>'
+			let g:airline_left_alt_sep = '>'
+			let g:airline_right_sep = '<'
+			let g:airline_right_alt_sep = '<'
+			let g:airline_symbols.branch = '$'
+			let g:airline_symbols.readonly = '*'
+			let g:airline_symbols.linenr = '#'
+			let g:airline_detect_iminsert=1
+		endif
 
 	" }}}
 
