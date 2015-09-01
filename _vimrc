@@ -189,6 +189,13 @@ endif
 
 	" }}}
 
+	" Syntax highlight {{{
+
+		" Highlight pas files with delphi syntax
+		let g:pascal_delphi = 1
+
+	" }}}
+
 " }}}
 
 " Environment {{{
@@ -409,6 +416,12 @@ endif
 	nmap g* g*zz
 	nmap g# g#zz
 
+	" Map ctrl-movement keys to window switching
+	map <C-k> <C-w><Up>
+	map <C-j> <C-w><Down>
+	map <C-l> <C-w><Right>
+	map <C-h> <C-w><Left>
+
 " }}}
 
 " Commands {{{
@@ -542,6 +555,7 @@ endif
 	" NerdTree {{{
 
 		nmap <BS> :NERDTreeToggle<CR>
+		nmap <C-\> :NERDTreeFind<CR>
 		let NERDTreeShowBookmarks=1
 		let NERDTreeChDirMode=2
 		let NERDTreeQuitOnOpen=1
@@ -608,7 +622,7 @@ endif
 			let g:airline_symbols = {}
 		endif
 
-		if has('gui')
+		if has('gui') && &guifont =~ "^Consolas for Powerline.*$"
 			let g:airline_left_sep = ''
 			let g:airline_left_alt_sep = ''
 			let g:airline_right_sep = ''
