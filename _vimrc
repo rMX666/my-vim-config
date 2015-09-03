@@ -585,6 +585,7 @@ endif
 
 	" Solarized.vim {{{
 
+		set t_Co=16
 		let g:solarized_termcolors=16
 		let g:solarized_visibility="low"
 		if has("gui")
