@@ -6,3 +6,5 @@ bundle/*
 
 backups/*
 !backups/.keep
+
+.netrwhist

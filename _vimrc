@@ -55,6 +55,8 @@ endif
 		Plugin 'tpope/vim-commentary'
 		" Fuzzy search
 		Plugin 'ctrlpvim/ctrlp.vim'
+		" Ack, code grep
+		Plugin 'mileszs/ack.vim'
 
 		" PHP + Html correct indentation
 		Plugin 'captbaritone/better-indent-support-for-php-with-html'
@@ -79,6 +81,9 @@ endif
 			Plugin 'tpope/vim-rake'
 			Plugin 'tpope/vim-bundler'
 		endif
+
+		" CSV
+		Plugin 'chrisbra/csv.vim'
 
 	" }}}
 
@@ -296,6 +301,9 @@ endif
 	" Remove trailing spaces
 	map <Leader>ts :%s/\s\+$//e<CR>
 
+	" Grep current word in current directory
+	nnoremap <Leader>f :<C-u>execute "Ack " . expand("<cword>") <Bar> cw<CR>
+
 	" Mappings for tabs
 	map <F5> :tabclose<CR>
 	map <F6> :tabprev<CR>
@@ -318,7 +326,7 @@ endif
 
 	" Toggle indent width
 	let s:currWidth = "4t"
-	function! g:SetIndentWidth(w)
+	function! s:setIndentWidth(w)
 		let l:width = substitute(a:w, '^\([0-9]\+\).*$', '\1', '')
 		let l:tabs = substitute(a:w, '^[0-9]\+\(t\?\)$', '\1', '')
 
@@ -335,11 +343,11 @@ endif
 
 	function! g:ToggleIndentWidth()
 		if s:currWidth == "4t"
-			call g:SetIndentWidth("8t")
+			call s:setIndentWidth("8t")
 		elseif s:currWidth == "8t"
-			call g:SetIndentWidth("2")
+			call s:setIndentWidth("2")
 		elseif s:currWidth == "2"
-			call g:SetIndentWidth("4t")
+			call s:setIndentWidth("4t")
 		endif
 	endfunction
 	nmap <F11> :call g:ToggleIndentWidth()<CR>
