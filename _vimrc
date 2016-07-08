@@ -168,6 +168,10 @@ endif
 	set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg
 	" Don't redraw while executing macros (good performance config)
 	set lazyredraw
+	" Vertical and horizontal scrolloff (count of rows and columns to be
+	" wisible above and below cursor)
+	set scrolloff=3
+	set sidescrolloff=10
 
 	" GUI options {{{
 
@@ -523,10 +527,9 @@ endif
 		let tt = "Files:"
 
 		let buflist = tabpagebuflist(tabpagenr())
+
 		for bufnr in buflist
-			if tt != ''
-				let tt .= "\n"
-			endif
+			let tt .= "\n"
 			let name = bufname(bufnr)
 			if name == ''
 				if getbufvar(bufnr, "&quickfix")
@@ -535,7 +538,7 @@ endif
 					let name = "[No Name]"
 				endif
 			endif
-			let tt .= "	" . name
+			let tt .= "    " . name
 			if getbufvar(bufnr, "&modified")
 				let tt .= " [+]"
 			endif
@@ -650,6 +653,14 @@ endif
 			let g:airline_symbols.linenr = '#'
 			let g:airline_detect_iminsert=1
 		endif
+
+	" }}}
+
+	" Syntastic {{{
+
+		let g:syntastic_check_on_open = 0
+		let g:syntastic_check_on_wq = 0
+		let g:syntastic_mode_map = { "mode": "passive" }
 
 	" }}}
 
