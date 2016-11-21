@@ -351,6 +351,8 @@ endif
 		elseif s:currWidth == "8t"
 			call s:setIndentWidth("2")
 		elseif s:currWidth == "2"
+			call s:setIndentWidth("4")
+		elseif s:currWidth == "4"
 			call s:setIndentWidth("4t")
 		endif
 	endfunction
