@@ -94,6 +94,10 @@ endif
 
 " Interface {{{
 
+	" Enable DirectX on Windows
+	if has('win32')
+		set renderoptions=type:directx
+	endif
 	" Enable syntax highlight
 	syntax on
 	" Background is dark
