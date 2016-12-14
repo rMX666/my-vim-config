@@ -53,10 +53,6 @@ endif
 		Plugin 'tpope/vim-repeat'
 		" Comment things out
 		Plugin 'tpope/vim-commentary'
-		" Fuzzy search
-		Plugin 'ctrlpvim/ctrlp.vim'
-		" Ack, code grep
-		Plugin 'mileszs/ack.vim'
 
 		" PHP + Html correct indentation
 		Plugin 'captbaritone/better-indent-support-for-php-with-html'
@@ -74,13 +70,6 @@ endif
 
 		" Solarized theme
 		Plugin 'altercation/vim-colors-solarized'
-
-		" Ruby
-		if has('ruby')
-			Plugin 'tpope/vim-rails'
-			Plugin 'tpope/vim-rake'
-			Plugin 'tpope/vim-bundler'
-		endif
 
 		" CSV
 		Plugin 'chrisbra/csv.vim'
