@@ -68,6 +68,9 @@ endif
 		" Cool git browser
 		Plugin 'tpope/vim-fugitive'
 
+		" Replace with case save
+		Plugin 'tpope/vim-abolish'
+
 		" Solarized theme
 		Plugin 'altercation/vim-colors-solarized'
 
