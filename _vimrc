@@ -64,7 +64,8 @@ endif
 		Plugin 'heavenshell/vim-jsdoc'
 
 		" Status line extention
-		Plugin 'bling/vim-airline'
+		Plugin 'vim-airline/vim-airline'
+		Plugin 'vim-airline/vim-airline-themes'
 		" Cool git browser
 		Plugin 'tpope/vim-fugitive'
 
@@ -92,8 +93,6 @@ endif
 	endif
 	" Enable syntax highlight
 	syntax on
-	" Background is dark
-	set background=dark
 	" Number lines
 	set number
 	" Width of number line
@@ -580,7 +579,6 @@ endif
 		let g:user_emmet_settings = {
 		\  'php' : {
 		\    'extends' : 'html',
-		\    'filters' : 'c',
 		\  },
 		\  'xml' : {
 		\    'extends' : 'html',
