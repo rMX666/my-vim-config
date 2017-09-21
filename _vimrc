@@ -650,6 +650,8 @@ endif
 			let g:airline_detect_iminsert=1
 		endif
 
+		let g:airline#extensions#keymap#enabled = 0
+
 	" }}}
 
 	" Syntastic {{{
