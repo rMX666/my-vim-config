@@ -27,6 +27,7 @@ endif
 			echo "Error: Clone finished with error."
 			finish
 		endif
+		:PluginInstall
 	endif
 
 	" Add Vundle to runtime path
