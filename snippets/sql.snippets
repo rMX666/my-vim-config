@@ -1,0 +1,34 @@
+version 1
+
+snippet dropts
+	declare
+	  Table_Not_Exists exception;
+	  pragma exception_init( Table_Not_Exists, -00942 );
+	  --
+	  procedure Drop_Table( p_TableName in varchar2 ) is
+	  begin
+	    execute immediate 'drop table ' || p_TableName;
+	  exception
+	    when Table_Not_Exists then
+	      null;
+	  end;
+	begin
+	  Drop_Table( '${0}' );
+	end;
+
+snippet dropt
+	declare
+	  Table_Not_Exists exception;
+	  pragma exception_init( Table_Not_Exists, -00942 );
+	begin
+	  execute immediate 'drop table ${0}';
+	exception
+	  when Table_Not_Exists then
+	    null;
+	end;
+
+snippet rbtab
+	create table rb\$_${1} as
+	  select *
+	    from ${1:table}
+	   where $0

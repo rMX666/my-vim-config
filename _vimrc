@@ -79,6 +79,11 @@ endif
 		" CSV
 		Plugin 'chrisbra/csv.vim'
 
+		" Snippets
+		Plugin 'MarcWeber/vim-addon-mw-utils'
+		Plugin 'tomtom/tlib_vim'
+		Plugin 'garbas/vim-snipmate'
+
 	" }}}
 
 	" Required!
@@ -368,6 +373,8 @@ endif
 	" Don't use Ex mode, use Q for formatting
 	map Q gq
 
+	" Map subtract to CTRL-S
+	vnoremap <C-S> <C-X>
 	" CTRL-X and SHIFT-Del are Cut
 	vnoremap <C-X>		"+x
 	vnoremap <S-Del>	"+x
@@ -662,5 +669,11 @@ endif
 		let g:syntastic_mode_map = { "mode": "passive" }
 
 	" }}}
+
+" }}}
+
+" PL/SQL {{{
+
+	let g:sql_type_default = 'plsql'
 
 " }}}
