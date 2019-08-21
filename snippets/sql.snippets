@@ -15,6 +15,7 @@ snippet dropts
 	begin
 	  Drop_Table( '${0}' );
 	end;
+	/
 
 snippet dropt
 	declare
@@ -26,6 +27,7 @@ snippet dropt
 	  when Table_Not_Exists then
 	    null;
 	end;
+	/
 
 snippet rbtab
 	create table rb\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_${1} as
