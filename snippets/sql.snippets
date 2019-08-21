@@ -28,7 +28,7 @@ snippet dropt
 	end;
 
 snippet rbtab
-	create table rb\$_${1} as
+	create table rb\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_${1} as
 	  select *
 	    from ${1:table}
 	   where $0
