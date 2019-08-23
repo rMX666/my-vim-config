@@ -34,3 +34,15 @@ snippet rbtab
 	  select *
 	    from ${1:table}
 	   where $0
+
+snippet aro
+	if GetBuzmeParameter( 'read_only_mode' ) != 0
+	then
+	  return;
+	end if;
+
+snippet cro
+	if CDB_Part.IsTableReadonly( '${0:table}' ) != 0
+	then
+	  return;
+	end if;
