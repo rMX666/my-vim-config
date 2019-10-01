@@ -13,7 +13,7 @@ snippet dropts
 	      null;
 	  end;
 	begin
-	  Drop_Table( '${0}' );
+	  Drop_Table( 'rb\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_${1}' );
 	end;
 	/
 
@@ -22,7 +22,7 @@ snippet dropt
 	  Table_Not_Exists exception;
 	  pragma exception_init( Table_Not_Exists, -00942 );
 	begin
-	  execute immediate 'drop table ${0}';
+	  execute immediate 'drop table rb\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_${1}';
 	exception
 	  when Table_Not_Exists then
 	    null;
