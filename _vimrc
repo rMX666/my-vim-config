@@ -112,11 +112,11 @@ endif
 	" Display incomplete commands
 	set showcmd
 	" Tabwidth
-	set tabstop=4
+"	set tabstop=2
 	" Tabwidth to expand in spaces
-	set shiftwidth=4
+"	set shiftwidth=2
 	" Don't expand tabs to spaces
-	set noexpandtab
+"	set expandtab
 	" Always show tab-header
 	set showtabline=2
 	" Don't wrap lines
@@ -330,32 +330,40 @@ endif
 	map <F9> :call g:ToggleAi()<CR>
 
 	" Toggle indent width
-	let s:currWidth = "4t"
-	function! s:setIndentWidth(w)
-		let l:width = substitute(a:w, '^\([0-9]\+\).*$', '\1', '')
-		let l:tabs = substitute(a:w, '^[0-9]\+\(t\?\)$', '\1', '')
+	let s:currWidth = ""
+	let s:tabWidths = [ "2", "4", "4t", "8t" ]
 
-		execute 'set tabstop=' . l:width
-		execute 'set shiftwidth=' . l:width
+	" Arguments:
+	" a:width string - <tab stop count><tab flag>
+	" a:1 boolean    - should echo the currently set tab stop
+	function! s:setIndentWidth(width, ...)
+		" Optional arguments
+		let l:echo = get(a:, 1, v:true) " boolean argument
+
+		" Parse required argement
+		let l:width = substitute(a:width, '^\([0-9]\+\).*$', '\1', '')
+		let l:tabs = substitute(a:width, '^[0-9]\+\(t\?\)$', '\1', '')
+
+		execute 'setlocal tabstop=' . l:width
+		execute 'setlocal shiftwidth=' . l:width
 		if l:tabs == 't'
-			set noexpandtab
+			setlocal noexpandtab
 		else
-			set expandtab
+			setlocal expandtab
 		endif
-		let s:currWidth = a:w
-		echo "Current tab-width: " . a:w
+		let s:currWidth = a:width
+		if l:echo
+			echo "Current tab-width: " . a:width
+		endif
 	endfunction
 
+	" Set default tabstop = 2, with no expand tabs
+	call s:setIndentWidth("2", 0)
+
 	function! g:ToggleIndentWidth()
-		if s:currWidth == "4t"
-			call s:setIndentWidth("8t")
-		elseif s:currWidth == "8t"
-			call s:setIndentWidth("2")
-		elseif s:currWidth == "2"
-			call s:setIndentWidth("4")
-		elseif s:currWidth == "4"
-			call s:setIndentWidth("4t")
-		endif
+		let l:idx  = index(s:tabWidths, s:currWidth)
+		let l:next = s:tabWidths[(l:idx + 1) % len(s:tabWidths)]
+		call s:setIndentWidth(l:next)
 	endfunction
 	nmap <F11> :call g:ToggleIndentWidth()<CR>
 
@@ -603,12 +611,12 @@ endif
 		set t_Co=16
 		let g:solarized_termcolors=16
 		let g:solarized_visibility="low"
+		let g:solarized_hitrail=1
 		if has("gui")
-			let g:solarized_contrast="high"
+			let g:solarized_contrast="normal"
 			let g:solarized_menu=1
 		else
 			let g:solarized_termtrans=1
-			let g:solarized_hitrail=1
 		endif
 
 		try
@@ -677,3 +685,5 @@ endif
 	let g:sql_type_default = 'plsql'
 
 " }}}
+
+" vim:ts=4:sw=4:noet
