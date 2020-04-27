@@ -1,6 +1,12 @@
 version 1
 
-snippet dropts
+snippet dropt
+	begin
+	  ZAdmin.Deploy_Support.rb\$_DropTable( 'rb\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_${1}' );
+	end;
+	/
+
+snippet dropts_old
 	declare
 	  Table_Not_Exists exception;
 	  pragma exception_init( Table_Not_Exists, -00942 );
@@ -17,7 +23,7 @@ snippet dropts
 	end;
 	/
 
-snippet dropt
+snippet dropt_old
 	declare
 	  Table_Not_Exists exception;
 	  pragma exception_init( Table_Not_Exists, -00942 );
@@ -41,6 +47,12 @@ snippet aro
 	  return;
 	end if;
 
+snippet bro
+	if Get_BDB_Parameter( 'read_only_mode' ) != '0'
+	then
+	  return;
+	end if;
+
 snippet cro
 	if CDB_Part.IsTableReadonly( '${0:table}' ) != 0
 	then
@@ -51,3 +63,26 @@ snippet br
 	--
 	-- ---------------------------------------------------------------------------
 	--
+
+snippet userfilter
+	join Users u
+	  on u.UserID       = ${0:alias}.UserID
+	 and u.PrivilegeID != 2 -- Not moved
+	join UserPODUnits upu
+	  on upu.PODUnitID = u.PODUnitID
+	 and upu.PODID     = UserPart.GetPODID
+	 and upu.UnitID    = UserPart.GetUnitID
+
+snippet be
+	begin
+	  $0
+	end;
+	/
+
+snippet dbe
+	declare
+	  $1
+	begin
+	  $0
+	end;
+	/
