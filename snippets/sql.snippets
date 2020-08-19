@@ -37,8 +37,8 @@ snippet dropt_old
 
 snippet rbtab
 	create table rb\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_${1} as
-	  select *
-	    from ${1:table}
+	  select ${2}.*
+	    from ${1:table} ${2:alias}
 	   where $0
 
 snippet aro
@@ -47,9 +47,22 @@ snippet aro
 	  return;
 	end if;
 
+snippet anro
+	if GetBuzmeParameter( 'read_only_mode' ) = 0
+	then
+	  $0
+	end if;
+
 snippet bro
 	if Get_BDB_Parameter( 'read_only_mode' ) != '0'
 	then
+	  return;
+	end if;
+
+snippet broo
+	if Get_BDB_Parameter( 'read_only_mode' ) != '0'
+	then
+	  DBMS_Output.Put_Line( 'Skip data modifications on RO unit' );
 	  return;
 	end if;
 
@@ -57,6 +70,24 @@ snippet cro
 	if CDB_Part.IsTableReadonly( '${0:table}' ) != 0
 	then
 	  return;
+	end if;
+
+snippet cnro
+	if CDB_Part.IsTableReadonly( '${1:table}' ) != 0
+	then
+	  $0
+	end if;
+
+snippet cgro
+	if CDB_Part.IsGroupReadonly( '${0:table}' ) != 0
+	then
+	  return;
+	end if;
+
+snippet cgnro
+	if CDB_Part.IsGroupReadonly( '${1:table}' ) != 0
+	then
+	  $0
 	end if;
 
 snippet br
@@ -86,3 +117,19 @@ snippet dbe
 	  $0
 	end;
 	/
+
+snippet mers
+	merge into Services tgt
+	  using (
+	    $0
+	  ) ${1:alias}
+	  on ( tgt.Parameter    = ${1}.Parameter
+	   and tgt.BrandID      = ${1}.BrandID
+	   and tgt.ServiceLevel = ${1}.ServiceLevel )
+	when matched then
+	  update
+	     set tgt.Value  = ${1}.Value
+	   where tgt.Value != ${1}.Value;
+
+snippet print
+	DBMS_Output.Put_Line( '$0' );

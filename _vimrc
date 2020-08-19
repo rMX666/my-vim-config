@@ -344,12 +344,12 @@ endif
 		let l:width = substitute(a:width, '^\([0-9]\+\).*$', '\1', '')
 		let l:tabs = substitute(a:width, '^[0-9]\+\(t\?\)$', '\1', '')
 
-		execute 'setlocal tabstop=' . l:width
-		execute 'setlocal shiftwidth=' . l:width
+		execute 'set tabstop=' . l:width
+		execute 'set shiftwidth=' . l:width
 		if l:tabs == 't'
-			setlocal noexpandtab
+			set noexpandtab
 		else
-			setlocal expandtab
+			set expandtab
 		endif
 		let s:currWidth = a:width
 		if l:echo
