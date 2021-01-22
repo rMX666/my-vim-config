@@ -634,6 +634,10 @@ endif
 
 	" }}}
 
+	" SnipMate {{{
+		let g:snipMate = { 'snippet_version' : 1 }
+	" }}}
+
 " }}}
 
 " Status line {{{
