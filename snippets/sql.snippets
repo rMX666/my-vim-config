@@ -73,19 +73,19 @@ snippet cro
 	end if;
 
 snippet cnro
-	if CDB_Part.IsTableReadonly( '${1:table}' ) != 0
+	if CDB_Part.IsTableReadonly( '${1:table}' ) = 0
 	then
 	  $0
 	end if;
 
 snippet cgro
-	if CDB_Part.IsGroupReadonly( '${0:table}' ) != 0
+	if CDB_Part.IsGroupReadonly( '${0:group}' ) != 0
 	then
 	  return;
 	end if;
 
 snippet cgnro
-	if CDB_Part.IsGroupReadonly( '${1:table}' ) != 0
+	if CDB_Part.IsGroupReadonly( '${1:group}' ) = 0
 	then
 	  $0
 	end if;
@@ -133,3 +133,16 @@ snippet mers
 
 snippet print
 	DBMS_Output.Put_Line( '$0' );
+
+snippet maxstr
+	join ( select Package_ID, max( Structure_Version ) as Structure_Version
+	         from Package_Ver_Struct
+	        where LC_Status_ID = 1
+	        group by Package_ID
+	     ) sm
+	  on sm.Package_ID        = ${1:alias}.Package_ID
+	 and sm.Structure_Version = ${1:alias}.Structure_Version
+	${0}
+
+snippet timestamp
+	timestamp with local time zone := to_timestamp_tz( '${1:yyyy}-${2:mm}-${3:dd} 11:00:00+00:00', 'YYYY-MM-DD HH24:MI:SS TZH:TZM' );
