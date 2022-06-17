@@ -157,8 +157,19 @@ snippet mers
 	   and tgt.ServiceLevel = ${1}.ServiceLevel )
 	when matched then
 	  update
-	     set tgt.Value  = ${1}.Value
-	   where tgt.Value != ${1}.Value;
+	     set tgt.Value  = ${1}.Value_New
+	   where tgt.Value != ${1}.Value_New;
+
+snippet mersr
+	merge into Services tgt
+	  using ${1:table} ${2:alias}
+	  on ( tgt.Parameter    = ${2}.Parameter
+	   and tgt.BrandID      = ${2}.BrandID
+	   and tgt.ServiceLevel = ${2}.ServiceLevel )
+	when matched then
+	  update
+	     set tgt.Value  = ${2}.Value_New
+	   where tgt.Value != ${2}.Value_New;
 
 snippet print
 	DBMS_Output.Put_Line( '$0' );
@@ -186,13 +197,47 @@ snippet brandcl
 	 and cl.Label_Value in ( ${2:brands}
 	                       )
 	 and cl.Package_Ver_Price_ID is null
-	${0}
 
 snippet drop_package
 	declare
 	  C_PACKAGE_ID constant varchar2(100) := '${1:Package_ID}';
 	  C_STRUCT_ID  constant number        := ${1};
 	  C_PRICE_ID   constant number        := ${1};
+	begin
+	  if Get_BDB_Parameter( 'read_only_mode' ) != '0'
+	  then
+	    DBMS_Output.Put_Line( 'Skip data modifications on RO unit' );
+	    return;
+	  end if;
+	
+	  delete from Package_Business_Identity  where Package_ID = C_PACKAGE_ID;
+	  delete from Common_Label               where Package_ID = C_PACKAGE_ID;
+	
+	  delete from Package_Ver_Price_Feature  where Package_Ver_Price_ID = C_PRICE_ID;
+	  delete from Package_Ver_Price_License  where Package_Ver_Price_ID = C_PRICE_ID;
+	  delete from Package_Ver_For_Sale       where Package_Ver_Price_ID = C_PRICE_ID;
+	  delete from Package_Ver_Price          where Package_Ver_Price_ID = C_PRICE_ID;
+	
+	  delete from LBox_Value                 where Package_Ver_Struct_ID = C_STRUCT_ID;
+	  delete from Package_Ver_Struct_Feature where Package_Ver_Struct_ID = C_STRUCT_ID;
+	  delete from Package_Ver_Struct_Elemt   where Package_Ver_Struct_ID = C_STRUCT_ID;
+	  delete from Package_Ver_Struct         where Package_Ver_Struct_ID = C_STRUCT_ID;
+	
+	  delete from Package_Transition_Privs   where Transition_ID in ( select Transition_ID from Package_Transition where C_PACKAGE_ID in ( Package_ID_From, Package_ID_To ) );
+	  delete from Package_Transition         where C_PACKAGE_ID in ( Package_ID_From, Package_ID_To );
+	  delete from Package_Payment_Type       where Package_ID      = C_PACKAGE_ID;
+	  delete from Package_Master_Duration    where Package_ID      = C_PACKAGE_ID;
+	  delete from Package                    where Package_ID      = C_PACKAGE_ID;
+	
+	  commit;
+	end;
+	/
+
+snippet drop_package_f
+	declare
+	  C_PACKAGE_ID constant varchar2(100) := '`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\)[^0-9]*\\(\\d\\+\\)\\.\\d.*', '\\3', 'g')`';
+	  C_STRUCT_ID  constant number        := `substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\)[^0-9]*\\(\\d\\+\\)\\.\\d.*', '\\3', 'g')`;
+	  C_PRICE_ID   constant number        := `substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\)[^0-9]*\\(\\d\\+\\)\\.\\d.*', '\\3', 'g')`;
 	begin
 	  if Get_BDB_Parameter( 'read_only_mode' ) != '0'
 	  then
@@ -238,7 +283,7 @@ snippet create_package
 	  --
 	  C_DISPLAY_NAME             constant nvarchar2(200)                 := '${3:Package_Name}';
 	  C_PACKAGE_NAME             constant varchar2(200)                  := '${3:Package_Name}';
-	  C_BRAND                    constant varchar2(200)                  := '${4:Brand_Name}';
+	  C_BRAND                    constant nvarchar2(200)                 := '${4:Brand_Name}';
 	  C_EDITION                  constant number                         := ${5:Edition};
 	  C_NS_REPORTING             constant number                         := 1;
 	  C_DEFAULT_PRICE_START_DATE constant timestamp with local time zone := to_timestamp_tz( '1970-01-01 11:00:00+00:00', 'YYYY-MM-DD HH24:MI:SS TZH:TZM' );

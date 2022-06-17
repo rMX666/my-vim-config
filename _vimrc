@@ -84,6 +84,10 @@ endif
 		Plugin 'tomtom/tlib_vim'
 		Plugin 'garbas/vim-snipmate'
 
+		" Rust support
+		Plugin 'rust-lang/rust.vim'
+
+
 	" }}}
 
 	" Required!
@@ -687,6 +691,7 @@ endif
 " PL/SQL {{{
 
 	let g:sql_type_default = 'plsql'
+	let plsql_legacy_sql_keywords = 1
 
 " }}}
 
