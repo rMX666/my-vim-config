@@ -36,7 +36,7 @@ endif
 
 	" Let Vundle manage Vundle
 	" Required!
-	Plugin 'gmarik/vundle'
+	Plugin 'VundleVim/Vundle.vim'
 
 	" Plugin {{{
 
@@ -617,7 +617,6 @@ endif
 		let g:solarized_visibility="low"
 		let g:solarized_hitrail=1
 		if has("gui")
-			let g:solarized_contrast="normal"
 			let g:solarized_menu=1
 		else
 			let g:solarized_termtrans=1

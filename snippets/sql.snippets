@@ -8,7 +8,7 @@ snippet dropt
 
 snippet dropt_user
 	declare
-	  c_TableName constant varchar2(100) := 'rbr\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_UserServices';
+	  c_TableName constant varchar2(100) := 'rbr\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_UserSvc';
 	begin
 	  if GetBuzmeParameter( 'read_only_mode' ) = 0
 	  then
@@ -32,6 +32,21 @@ snippet dropt_user
 	  ${0}
 	
 	  commit;
+	end;
+	/
+
+snippet rollback_user
+	declare
+	  c_TableName constant varchar2(100) := 'rbr\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_UserSvc';
+	begin
+	  if ZAdmin.RBR_Support.Check_Rollback( 'ADB', c_TableName, 'ZPortal' )
+	  then
+	    execute immediate '${0}';
+	
+	    ZAdmin.RBR_Support.Reg_Rollback( 'ADB', c_TableName, 'ZPortal' );
+	
+	    commit;
+	  end if;
 	end;
 	/
 
