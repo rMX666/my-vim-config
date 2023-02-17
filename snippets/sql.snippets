@@ -111,7 +111,7 @@ snippet broo
 	end if;
 
 snippet cro
-	if CDB_Part.IsTableReadonly( '${0:table}' ) != 0
+	if CDB_Part.IsTableReadonly( '${1:table}' ) != 0
 	then
 	  return;
 	end if;
@@ -123,7 +123,7 @@ snippet cnro
 	end if;
 
 snippet cgro
-	if CDB_Part.IsGroupReadonly( '${0:group}' ) != 0
+	if CDB_Part.IsGroupReadonly( '${1:group}' ) != 0
 	then
 	  return;
 	end if;
@@ -141,7 +141,7 @@ snippet br
 
 snippet userfilter
 	join Users u
-	  on u.UserID       = ${0:alias}.UserID
+	  on u.UserID       = ${1:alias}.UserID
 	 and u.PrivilegeID != 2 -- Not moved
 	join UserPODUnits upu
 	  on upu.PODUnitID = u.PODUnitID
