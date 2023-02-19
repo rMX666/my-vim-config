@@ -17,12 +17,12 @@ endif
 	endif
 
 	" Vundle path
-	let s:vundle = expand("~/.vim/bundle/vundle")
+	let s:vundle = expand("~/.vim/bundle/Vundle.vim")
 
 	" Check vundle and try to install if not found
 	if !isdirectory(s:vundle)
 		echo "Vundle does not exists! Trying to get it..."
-		echo system('git clone --recursive https://github.com/gmarik/vundle.git "' . s:vundle . '"')
+		echo system('git clone --recursive https://github.com/VundleVim/Vundle.vim "' . s:vundle . '"')
 		if v:shell_error
 			echo "Error: Clone finished with error."
 			finish
