@@ -56,13 +56,11 @@ endif
 		Plugin 'tpope/vim-commentary'
 
 		" PHP + Html correct indentation
-		Plugin 'captbaritone/better-indent-support-for-php-with-html'
-
+		" Plugin 'captbaritone/better-indent-support-for-php-with-html'
 		" Highlight colors in css files
-		Plugin 'ap/vim-css-color'
-
+		" Plugin 'ap/vim-css-color'
 		" Javascript documentor
-		Plugin 'heavenshell/vim-jsdoc'
+		" Plugin 'heavenshell/vim-jsdoc'
 
 		" Status line extention
 		Plugin 'vim-airline/vim-airline'
@@ -85,8 +83,7 @@ endif
 		Plugin 'garbas/vim-snipmate'
 
 		" Rust support
-		Plugin 'rust-lang/rust.vim'
-
+		" Plugin 'rust-lang/rust.vim'
 
 	" }}}
 
