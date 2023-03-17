@@ -20,6 +20,7 @@ endif
 	let s:vundle = expand("~/.vim/bundle/Vundle.vim")
 
 	" Check vundle and try to install if not found
+	let s:vundleExists = 1
 	if !isdirectory(s:vundle)
 		echo "Vundle does not exists! Trying to get it..."
 		echo system('git clone --recursive https://github.com/VundleVim/Vundle.vim "' . s:vundle . '"')
@@ -27,7 +28,7 @@ endif
 			echo "Error: Clone finished with error."
 			finish
 		endif
-		:PluginInstall
+		let s:vundleExists = 0
 	endif
 
 	" Add Vundle to runtime path
@@ -86,6 +87,11 @@ endif
 		" Plugin 'rust-lang/rust.vim'
 
 	" }}}
+
+	" Install plugins when Vundle was not initialized
+	if !s:vundleExists
+		:PluginInstall
+	endif
 
 	" Required!
 	filetype plugin indent on
@@ -174,6 +180,8 @@ endif
 	" wisible above and below cursor)
 	set scrolloff=3
 	set sidescrolloff=10
+	" Disable Mode line as it's being a source of vulnarabilities
+	set nomodeline
 
 	" GUI options {{{
 
@@ -358,9 +366,6 @@ endif
 		endif
 	endfunction
 
-	" Set default tabstop = 2, with no expand tabs
-	call s:setIndentWidth("2", 0)
-
 	function! g:ToggleIndentWidth()
 		let l:idx  = index(s:tabWidths, s:currWidth)
 		let l:next = s:tabWidths[(l:idx + 1) % len(s:tabWidths)]
@@ -464,6 +469,18 @@ endif
 
 	" Auto change the directory to the current file I'm working on
 	autocmd BufEnter * lcd %:p:h
+
+	" Set indents based on file contents:
+	" * If file contains lines starting with a Tab - set indent = 4
+	" * Otherwise leave default indent = 2
+	function! s:checkForTabs()
+		if search("^\t") != 0
+			call s:setIndentWidth("4t", 0)
+		else
+			call s:setIndentWidth("2", 0)
+		endif
+	endfunction
+	autocmd! BufReadPost * :call s:checkForTabs()
 
 	" Bind quit and write commands to its upper case analogs
 	command! Q q
@@ -690,5 +707,3 @@ endif
 	let plsql_legacy_sql_keywords = 1
 
 " }}}
-
-" vim:ts=4:sw=4:noet
