@@ -482,6 +482,14 @@ endif
 	endfunction
 	autocmd! BufReadPost * :call s:checkForTabs()
 
+	" When editing a file, always jump to the last cursor position
+	autocmd BufReadPost *
+		\ if ! exists("g:leave_my_cursor_position_alone") |
+		\     if line("'\"") > 0 && line ("'\"") <= line("$") |
+		\         exe "normal! g'\"" |
+		\     endif |
+		\ endif
+
 	" Bind quit and write commands to its upper case analogs
 	command! Q q
 	command! W w
