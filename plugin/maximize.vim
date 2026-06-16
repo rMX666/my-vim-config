@@ -1,9 +1,10 @@
 " Vim plugin file
 " Maintainer: kAtremer <katremer@yandex.ru>
-" Last changed: 2007 Oct 16
+" Last changed: 2026 June 16
+" Added support for Win64.
 "
 " maximize.vim
-" maximize gVim's window on startup on Win32
+" maximize gVim's window on startup on Win32 or Win64
 "
 " to install, put the script and maximize.dll
 " in $VIM\vimfiles\plugin
@@ -19,7 +20,11 @@ let g:loaded_maximize=1
 let s:save_cpoptions=&cpoptions
 set cpoptions&vim
 " }}}
-let s:dllfile=expand('<sfile>:p:h').'/maximize.dll'
+if has('win64')
+	let s:dllfile=expand('<sfile>:p:h').'/x64/maximize.dll'
+elseif has('win32')
+	let s:dllfile=expand('<sfile>:p:h').'/x86/maximize.dll'
+endif
 autocmd GUIEnter * call libcallnr(s:dllfile, 'Maximize', 1)
 " Restore the saved compatibility options {{{
 let &cpoptions=s:save_cpoptions
