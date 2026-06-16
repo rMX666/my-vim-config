@@ -83,6 +83,9 @@ endif
 		Plugin 'tomtom/tlib_vim'
 		Plugin 'garbas/vim-snipmate'
 
+		" Code alignment
+		Plugin 'junegunn/vim-easy-align'
+
 		" Rust support
 		" Plugin 'rust-lang/rust.vim'
 
@@ -196,7 +199,7 @@ endif
 			set guioptions+=c
 			" Disable menu by default
 			set guioptions-=m
-			if has('win32')
+			if has('win32') || has('win64')
 				set guifont=Consolas\ for\ Powerline:h11:cRUSSIAN::
 				" Maximize goes automatically on windows (with plugin 'maximize')
 			elseif has('unix')
@@ -455,6 +458,44 @@ endif
 
 " }}}
 
+
+" Functions {{{
+	function! g:ReplaceYYY(regexp, start, amount)
+		" Escape the delimiter if needed or use a safer one (we'll use '#')
+		let l:cmd = "%s#\\v" . a:regexp . "#\\=printf('%d%s%3d', submatch(1), submatch(2), " .
+					\ "a:start + ((str2nr(submatch(1)) - a:start) / a:amount) * a:amount)#"
+
+		" Execute the constructed substitute command
+		execute l:cmd
+	endfunction
+
+	function! g:ReplaceYYYWithLegID()
+		let l:lines = getline(1, '$')
+		let l:updated_lines = []
+		let l:last_legid = ''
+
+		for l:line in l:lines
+			" Check for pattern: LegID + <number>, null
+			if l:line =~ 'LegID\s*+\s*\d\+,\s*null'
+				" Extract the number and store it
+				let l:matchlist = matchlist(l:line, 'LegID\s*+ \(\s*\d\+\),\s*null')
+				let l:last_legid = l:matchlist[1]
+				call add(l:updated_lines, l:line)
+			elseif l:last_legid != ''
+				" Replace 'LegID + yyy' with 'LegID + <last_legid>'
+				let l:newline = substitute(l:line, 'yyy', l:last_legid, '')
+				call add(l:updated_lines, l:newline)
+			else
+				" Just copy the line if nothing matches and no LegID yet
+				call add(l:updated_lines, l:line)
+			endif
+		endfor
+
+		" Replace the buffer with updated lines
+		call setline(1, l:updated_lines)
+	endfunction
+" }}}
+
 " Commands {{{
 
 	" Resize splits when the window is resized
@@ -661,6 +702,14 @@ endif
 
 	" SnipMate {{{
 		let g:snipMate = { 'snippet_version' : 1 }
+	" }}}
+
+	" EasyAlign {{{
+		" Start interactive EasyAlign in visual mode (e.g. vipga)
+		xmap ga <Plug>(EasyAlign)
+
+		" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+		nmap ga <Plug>(EasyAlign)
 	" }}}
 
 " }}}

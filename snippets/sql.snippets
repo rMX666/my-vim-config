@@ -8,7 +8,7 @@ snippet dropt
 
 snippet dropt_user
 	declare
-	  c_TableName constant varchar2(100) := 'rbr\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_UserSvc';
+	  c_TableName constant varchar2(100) := 'rbr\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_${2:alias}';
 	begin
 	  if GetBuzmeParameter( 'read_only_mode' ) = 0
 	  then
@@ -16,22 +16,27 @@ snippet dropt_user
 	    ZAdmin.RBR_Support.Drop_Table( 'ADB', c_TableName, 'ZPortal' );
 	
 	    -- 2. Create table
-	    ZAdmin.Deploy_Support.Run_DDL( 'create table ' || c_TableName || ' as select UserID, Parameter, Value from UserServices where 1 = 0' );
+	    ZAdmin.Deploy_Support.Run_DDL( 'create table ' || c_TableName || ' as select UserID, Parameter, Value from ${1} where 1 = 0' );
 	
 	    -- 3. Register
-	    ZAdmin.RBR_Support.Register( 'ADB', c_TableName, 'ZPortal', p_use_in_UM => 1 );
+	    ZAdmin.RBR_Support.Register( 'ADB', c_TableName, 'ZPortal', p_Use_In_UM => 1 );
 	
 	    -- 4. Add PK or unique index for golden gate replication
-	    ZAdmin.Deploy_Support.Run_DDL( 'alter table ' || c_TableName || ' add constraint ' || c_TableName || '_PK primary key ( UserID )' );
+	    ZAdmin.RBR_Support.Create_RBR_PK( p_SourceTabName => '${1:table}'
+	                                    , p_TargerTabName => c_TableName
+	                                    );
+	
+	    ZAdmin.Deploy_Support.Run_DDL( 'alter table ' || c_TableName || ' add constraint ' || c_TableName || '_PK primary key ( UserID ) using index' );
+	
+	    --
+	    -- ---------------------------------------------------------------------------
+	    --
+	
+	    execute immediate
+	      '${0}';
+	
+	    commit;
 	  end if;
-	
-	  --
-	  -- ---------------------------------------------------------------------------
-	  --
-	
-	  ${0}
-	
-	  commit;
 	end;
 	/
 
@@ -41,7 +46,8 @@ snippet rollback_user
 	begin
 	  if ZAdmin.RBR_Support.Check_Rollback( 'ADB', c_TableName, 'ZPortal' )
 	  then
-	    execute immediate '${0}';
+	    execute immediate
+	      '${0}';
 	
 	    ZAdmin.RBR_Support.Reg_Rollback( 'ADB', c_TableName, 'ZPortal' );
 	
@@ -50,32 +56,20 @@ snippet rollback_user
 	end;
 	/
 
-snippet dropts_old
+snippet delete_fk
 	declare
-	  Table_Not_Exists exception;
-	  pragma exception_init( Table_Not_Exists, -00942 );
-	  --
-	  procedure Drop_Table( p_TableName in varchar2 ) is
-	  begin
-	    execute immediate 'drop table ' || p_TableName;
-	  exception
-	    when Table_Not_Exists then
-	      null;
-	  end;
+	  -- integrity constraint violated - child record found
+	  FK_Violated exception;
+	  pragma exception_init( FK_Violated, -02292 );
 	begin
-	  Drop_Table( 'rb\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_${1}' );
-	end;
-	/
+	  delete from ${1:table}
+	   where $0;
+	  DBMS_Output.Put_Line( 'Deleted ${1}: ' || SQL%RowCount || ' records.' );
 
-snippet dropt_old
-	declare
-	  Table_Not_Exists exception;
-	  pragma exception_init( Table_Not_Exists, -00942 );
-	begin
-	  execute immediate 'drop table rb\$_`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\).*', '\\1_\\2', 'g')`_${1}';
+	  commit;
 	exception
-	  when Table_Not_Exists then
-	    null;
+	  when FK_Violated then
+	    DBMS_Output.Put_Line( 'Failed to delete records from ${1} - referencing records found');
 	end;
 	/
 
@@ -111,25 +105,25 @@ snippet broo
 	end if;
 
 snippet cro
-	if CDB_Part.IsTableReadonly( '${1:table}' ) != 0
+	if CDB_Part.IsTableReadonlyDeploy( '${1:table}' )
 	then
 	  return;
 	end if;
 
 snippet cnro
-	if CDB_Part.IsTableReadonly( '${1:table}' ) = 0
+	if not CDB_Part.IsTableReadonlyDeploy( '${1:table}' )
 	then
 	  $0
 	end if;
 
 snippet cgro
-	if CDB_Part.IsGroupReadonly( '${1:group}' ) != 0
+	if CDB_Part.IsGroupReadonlyDeploy( '${1:group}' )
 	then
 	  return;
 	end if;
 
 snippet cgnro
-	if CDB_Part.IsGroupReadonly( '${1:group}' ) = 0
+	if not CDB_Part.IsGroupReadonlyDeploy( '${1:group}' )
 	then
 	  $0
 	end if;
@@ -159,6 +153,48 @@ snippet dbe
 	  $1
 	begin
 	  $0
+	end;
+	/
+
+snippet seq
+	begin
+	  ZAdmin.Deploy_Support.Create_Sequence( p_Owner        => 'ZPORTAL'
+	                                       , p_TableName    => '$1'
+	                                       , p_ColumnName   => '$2'
+	                                       , p_SequenceName => '${1}_SEQ'
+	                                       );
+	end;
+	/
+
+snippet drop_seq
+	begin
+	  ZAdmin.Deploy_Support.Drop_Sequence( p_Owner        => 'ZPORTAL'
+	                                     , p_SequenceName => '${1}'
+	                                     );
+	end;
+	/
+
+snippet runddl
+	--
+	-- c_IGN_CreateTable
+	-- c_IGN_DropTable
+	-- c_IGN_AddColumn
+	-- c_IGN_DropColumn
+	-- c_IGN_SetColumnNull
+	-- c_IGN_SetColumnNotNull
+	-- c_IGN_AddConstraint
+	-- c_IGN_DropConstraint
+	-- c_IGN_CreateIndex
+	-- c_IGN_DropIndex
+	-- c_IGN_DropTrigger
+	-- c_IGN_DropSequence
+	-- c_IGN_DropPackage
+	-- c_IGN_DropSynonym
+	--
+	
+	begin
+	  ZAdmin.Deploy_Support.Ignore_ORA( ZAdmin.Deploy_Support.c_IGN_$1 );
+	  ZAdmin.Deploy_Support.Run_DDL( '$2' );
 	end;
 	/
 
@@ -213,241 +249,13 @@ snippet brandcl
 	                       )
 	 and cl.Package_Ver_Price_ID is null
 
-snippet drop_package
-	declare
-	  C_PACKAGE_ID constant varchar2(100) := '${1:Package_ID}';
-	  C_STRUCT_ID  constant number        := ${1};
-	  C_PRICE_ID   constant number        := ${1};
-	begin
-	  if Get_BDB_Parameter( 'read_only_mode' ) != '0'
-	  then
-	    DBMS_Output.Put_Line( 'Skip data modifications on RO unit' );
-	    return;
-	  end if;
-	
-	  delete from Package_Business_Identity  where Package_ID = C_PACKAGE_ID;
-	  delete from Common_Label               where Package_ID = C_PACKAGE_ID;
-	
-	  delete from Package_Ver_Price_Feature  where Package_Ver_Price_ID = C_PRICE_ID;
-	  delete from Package_Ver_Price_License  where Package_Ver_Price_ID = C_PRICE_ID;
-	  delete from Package_Ver_For_Sale       where Package_Ver_Price_ID = C_PRICE_ID;
-	  delete from Package_Ver_Price          where Package_Ver_Price_ID = C_PRICE_ID;
-	
-	  delete from LBox_Value                 where Package_Ver_Struct_ID = C_STRUCT_ID;
-	  delete from Package_Ver_Struct_Feature where Package_Ver_Struct_ID = C_STRUCT_ID;
-	  delete from Package_Ver_Struct_Elemt   where Package_Ver_Struct_ID = C_STRUCT_ID;
-	  delete from Package_Ver_Struct         where Package_Ver_Struct_ID = C_STRUCT_ID;
-	
-	  delete from Package_Transition_Privs   where Transition_ID in ( select Transition_ID from Package_Transition where C_PACKAGE_ID in ( Package_ID_From, Package_ID_To ) );
-	  delete from Package_Transition         where C_PACKAGE_ID in ( Package_ID_From, Package_ID_To );
-	  delete from Package_Payment_Type       where Package_ID      = C_PACKAGE_ID;
-	  delete from Package_Master_Duration    where Package_ID      = C_PACKAGE_ID;
-	  delete from Package                    where Package_ID      = C_PACKAGE_ID;
-	
-	  commit;
-	end;
-	/
+snippet update_base_tier
+	exec DBMS_Application_Info.Set_Action( 'UPDATE_BASE_TIER' );
 
-snippet drop_package_f
-	declare
-	  C_PACKAGE_ID constant varchar2(100) := '`substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\)[^0-9]*\\(\\d\\+\\)\\.\\d.*', '\\3', 'g')`';
-	  C_STRUCT_ID  constant number        := `substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\)[^0-9]*\\(\\d\\+\\)\\.\\d.*', '\\3', 'g')`;
-	  C_PRICE_ID   constant number        := `substitute(Filename(), '^\\([A-Za-z]\\+\\)-\\([0-9]\\+\\)[^0-9]*\\(\\d\\+\\)\\.\\d.*', '\\3', 'g')`;
-	begin
-	  if Get_BDB_Parameter( 'read_only_mode' ) != '0'
-	  then
-	    DBMS_Output.Put_Line( 'Skip data modifications on RO unit' );
-	    return;
-	  end if;
-	
-	  delete from Package_Business_Identity  where Package_ID = C_PACKAGE_ID;
-	  delete from Common_Label               where Package_ID = C_PACKAGE_ID;
-	
-	  delete from Package_Ver_Price_Feature  where Package_Ver_Price_ID = C_PRICE_ID;
-	  delete from Package_Ver_Price_License  where Package_Ver_Price_ID = C_PRICE_ID;
-	  delete from Package_Ver_For_Sale       where Package_Ver_Price_ID = C_PRICE_ID;
-	  delete from Package_Ver_Price          where Package_Ver_Price_ID = C_PRICE_ID;
-	
-	  delete from LBox_Value                 where Package_Ver_Struct_ID = C_STRUCT_ID;
-	  delete from Package_Ver_Struct_Feature where Package_Ver_Struct_ID = C_STRUCT_ID;
-	  delete from Package_Ver_Struct_Elemt   where Package_Ver_Struct_ID = C_STRUCT_ID;
-	  delete from Package_Ver_Struct         where Package_Ver_Struct_ID = C_STRUCT_ID;
-	
-	  delete from Package_Transition_Privs   where Transition_ID in ( select Transition_ID from Package_Transition where C_PACKAGE_ID in ( Package_ID_From, Package_ID_To ) );
-	  delete from Package_Transition         where C_PACKAGE_ID in ( Package_ID_From, Package_ID_To );
-	  delete from Package_Payment_Type       where Package_ID      = C_PACKAGE_ID;
-	  delete from Package_Master_Duration    where Package_ID      = C_PACKAGE_ID;
-	  delete from Package                    where Package_ID      = C_PACKAGE_ID;
-	
-	  commit;
-	end;
-	/
-
-snippet create_package
-	set serveroutput on
-	DECLARE
-	  C_SRC_PACKAGE_ID           constant varchar2(100)                  := '${1:Src_Package_ID}';
-	  C_SRC_VERSION              constant varchar2(100)                  := '1';
-	  V_SRC_STRUCT_ID                     number                         := null;
-	  V_SRC_PRICE_ID                      number                         := null;
-	  --
-	  C_PACKAGE_ID               constant varchar2(100)                  := '${2:New_Package_ID}';
-	  C_VERSION                  constant varchar2(100)                  := '1';
-	  C_STRUCT_ID                constant number                         := ${2};
-	  C_PRICE_ID                 constant number                         := ${2};
-	  --
-	  C_DISPLAY_NAME             constant nvarchar2(200)                 := '${3:Package_Name}';
-	  C_PACKAGE_NAME             constant varchar2(200)                  := '${3:Package_Name}';
-	  C_BRAND                    constant nvarchar2(200)                 := '${4:Brand_Name}';
-	  C_EDITION                  constant number                         := ${5:Edition};
-	  C_NS_REPORTING             constant number                         := 1;
-	  C_DEFAULT_PRICE_START_DATE constant timestamp with local time zone := to_timestamp_tz( '1970-01-01 11:00:00+00:00', 'YYYY-MM-DD HH24:MI:SS TZH:TZM' );
-	  --
-	  function GetLastStruct( p_Package_ID in varchar2 ) return number
-	  is
-	    v_Struct_ID number;
-	  begin
-	    select s.Package_Ver_Struct_ID
-	      into v_Struct_ID
-	      from Package_Ver_Struct s
-	     where s.Package_ID   = p_Package_ID
-	       and s.LC_Status_ID = 1;
-	    --
-	    return v_Struct_ID;
-	  end;
-	  --
-	  function GetPriceID( p_Package_ID in varchar2, p_Version in varchar2 ) return number
-	  is
-	    v_Price_ID number;
-	  begin
-	    select Package_Ver_Price_ID
-	      into v_Price_ID
-	      from Package_Ver_For_Sale
-	     where Package_ID = p_Package_ID
-	       and Package_Version = p_Version;
-	    --
-	    return v_Price_ID;
-	  end;
-	begin
-	  if Get_BDB_Parameter( 'read_only_mode' ) != '0'
-	  then
-	    DBMS_Output.Put_Line( 'Skip data modifications on RO unit' );
-	    return;
-	  end if;
-	
-	  V_SRC_STRUCT_ID := GetLastStruct( C_SRC_PACKAGE_ID );
-	  V_SRC_PRICE_ID  := GetPriceID( C_SRC_PACKAGE_ID, C_SRC_VERSION );
-	
-	  --------------------------------------------------------------------------------
-	  -- CREATE NEW PACKAGE AS COPY OF SRC PACKAGE
-	  --------------------------------------------------------------------------------
-	
-	  insert into Package
-	    ( Package_ID, Package_Name, Product_ID, Start_Date, End_Date, Provisioning_Params, Currency, Subsidiary_Country, Edition_ID, Conf_Features_Version, Offer_Type_ID, NS_Reporting )
-	    select C_PACKAGE_ID, C_PACKAGE_NAME, Product_ID, Start_Date, End_Date, Provisioning_Params, Currency, Subsidiary_Country, C_EDITION, Conf_Features_Version, Offer_Type_ID, C_NS_REPORTING
-	      from Package
-	     where Package_ID = C_SRC_PACKAGE_ID;
-	
-	  insert into Package_Business_Identity
-	    ( Package_ID, Business_Identity_ID, Is_Default )
-	    select C_PACKAGE_ID, Business_Identity_ID, Is_Default
-	      from Package_Business_Identity
-	     where Package_ID = C_SRC_PACKAGE_ID;
-	
-	  insert into Common_Label
-	    ( Label_Key, Label_Value, Package_ID, Element_ID )
-	    select Label_Key
-	         , case
-	             when Label_Key = 'Brand' then C_BRAND
-	             else Label_Value
-	           end as Label_Value
-	         , C_PACKAGE_ID
-	         , Element_ID
-	      from Common_Label
-	     where Package_ID = C_SRC_PACKAGE_ID
-	       and Package_Ver_Price_ID is null;
-	
-	  insert into Package_Master_Duration
-	    ( Package_ID, Period_Duration_ID )
-	    select C_PACKAGE_ID, Period_Duration_ID
-	      from Package_Master_Duration
-	     where Package_ID = C_SRC_PACKAGE_ID;
-	
-	  insert into Package_Payment_Type
-	    ( Package_ID, Payment_Type_ID )
-	    select C_PACKAGE_ID, Payment_Type_ID
-	      from Package_Payment_Type
-	     where Package_ID = C_SRC_PACKAGE_ID;
-	
-	  insert into Package_Ver_Struct
-	    ( Package_Ver_Struct_ID, Package_ID, Structure_Version, Start_Date, End_Date, LC_Status_ID, Cre_Date )
-	    select C_STRUCT_ID, C_PACKAGE_ID, 1, Start_Date, End_Date, LC_Status_ID, Current_Timestamp + INTERVAL '0.001' SECOND * C_STRUCT_ID
-	      from Package_Ver_Struct
-	     where Package_Ver_Struct_ID = V_SRC_STRUCT_ID;
-	
-	  insert into Package_Ver_Struct_Elemt
-	    ( Package_Ver_Struct_ID, Element_ID, When_To_Bill_ID, Visible, Show_If_Zero, Min_Licenses, Max_Licenses, CBox_Rule_Values, Allow_Mixed_Plans, Sales_End_Date, Display_Name, Statement_Name, Sales_Start_Date )
-	    select C_STRUCT_ID, Element_ID, When_To_Bill_ID, Visible, Show_If_Zero, Min_Licenses, Max_Licenses, CBox_Rule_Values, Allow_Mixed_Plans, Sales_End_Date, Display_Name, Statement_Name, Sales_Start_Date
-	      from Package_Ver_Struct_Elemt
-	     where Package_Ver_Struct_ID = V_SRC_STRUCT_ID;
-	
-	  insert into Package_Ver_Struct_Feature
-	    ( Package_Ver_Struct_ID, Element_ID, Feature_ID, Configuration, Provisioning_Config_Params )
-	    select C_STRUCT_ID, Element_ID, Feature_ID, Configuration, Provisioning_Config_Params
-	      from Package_Ver_Struct_Feature
-	     where Package_Ver_Struct_ID = V_SRC_STRUCT_ID;
-	
-	  insert into LBox_Value
-	    ( LBox_ID, Package_Ver_Struct_ID, Value_Min, Value_Max )
-	    select lbox_id, C_STRUCT_ID, Value_Min, Value_Max
-	      from LBox_Value
-	     where Package_Ver_Struct_ID = V_SRC_STRUCT_ID;
-	
-	  insert into Package_Ver_Price
-	    ( Package_Ver_Price_ID, Package_ID, Price_Version, Start_Date, End_Date, LC_Status_ID, Cre_Date, Package_Global_Limit_Value )
-	    select C_PRICE_ID, C_PACKAGE_ID, C_VERSION, Start_Date, End_Date, LC_Status_ID, Current_Timestamp + INTERVAL '0.001' SECOND * C_PRICE_ID, Package_Global_Limit_Value
-	      from Package_Ver_Price
-	     where Package_Ver_Price_ID = V_SRC_PRICE_ID;
-	
-	  insert into Package_Ver_For_Sale
-	    ( Package_Ver_Price_ID, Package_ID, Package_Version, Sales_Start, Sales_End, LC_Status_ID, Display_Name, Head_Version )
-	    select C_PRICE_ID, C_PACKAGE_ID, C_VERSION, Sales_Start, Sales_End, LC_Status_ID, C_DISPLAY_NAME, 1
-	      from Package_Ver_For_Sale
-	     where Package_Ver_Price_ID = V_SRC_PRICE_ID;
-	
-	  insert into Package_Ver_Price_License
-	    ( Package_Ver_Price_ID, Element_ID, Period_Duration_ID, Prorate_Removal, Prorate_Purchase, Prorate_Replace, Prorate_Upgrade, Delay_Removal, Delay_Replace )
-	    select C_PRICE_ID, Element_ID, Period_Duration_ID, Prorate_Removal, Prorate_Purchase, Prorate_Replace, Prorate_Upgrade, Delay_Removal, Delay_Replace
-	      from Package_Ver_Price_License
-	     where Package_Ver_Price_ID = V_SRC_PRICE_ID;
-	
-	  insert into Package_Ver_Price_Feature
-	    ( Package_Ver_Price_ID, Element_ID, Feature_ID, Rater_ID, Rater_Configuration, Provisioning_Setup_Params, Provisioning_Recur_Params, Start_Date )
-	    select C_PRICE_ID as Package_Ver_Price_ID
-	         , f.Element_ID
-	         , f.Feature_ID
-	         , f.Rater_ID
-	         , f.Rater_Configuration
-	         , f.Provisioning_Setup_Params
-	         , f.Provisioning_Recur_Params
-	         , C_DEFAULT_PRICE_START_DATE as Start_Date
-	      from Package_Ver_Price_Feature f
-	      join ( select Package_Ver_Price_ID, Element_ID, Feature_ID, max( Start_Date ) as Start_Date
-	               from Package_Ver_Price_Feature
-	              where Package_Ver_Price_ID = V_SRC_PRICE_ID
-	              group by Package_Ver_Price_ID, Element_ID, Feature_ID
-	           ) fm
-	        on fm.Package_Ver_Price_ID = f.Package_Ver_Price_ID
-	       and fm.Element_ID           = f.Element_ID
-	       and fm.Feature_ID           = f.Feature_ID
-	       and fm.Start_Date           = f.Start_Date;
-	
-	  --------------------------------------------------------------------------------
-	  -- ADJUST NEW PACKAGE
-	  --------------------------------------------------------------------------------
-	
-	  ${0}
-	
-	  commit;
-	end;
-	/
+snippet gg_logdump
+	open $1
+	ghdr on
+	detail data
+	usertoken detail
+	pos $2
+	n
