@@ -154,7 +154,7 @@ endif
 	" Use following characters to display service chars
 	set list
 	" Char for service characters
-	set listchars=tab:\|-,trail:.
+	set listchars=tab:\|-,trail:.,nbsp:+
 	" Buffer splitter, fold and diff fill chars
 	set fillchars=stl:\ ,stlnc:\ ,vert:\ ,diff:—,fold:—
 	" Show matching <> () [] {}
